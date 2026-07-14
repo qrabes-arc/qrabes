@@ -3,6 +3,9 @@ name: Run Crawler
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   crawl:
     runs-on: ubuntu-latest
@@ -17,3 +20,14 @@ jobs:
       - run: pip install feedparser requests beautifulsoup4
 
       - run: python crawler.py
+
+      - name: Commit articles.json
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+          git add articles.json
+
+          git commit -m "Update articles.json" || echo "No changes"
+
+          git push
