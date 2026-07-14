@@ -6,45 +6,49 @@ import json
 RSS_FEEDS = [
     "https://www.vogue.com/feed/rss",
     "https://www.architecturaldigest.com/feed/rss",
-    "https://www.robbreport.com/feed/",
-    "https://www.luxuo.com/feed"
+    "https://robbreport.com/feed/",
+    "https://www.luxuo.com/feed/"
 ]
 
 articles = []
 
-for feed in RSS_FEEDS:
-    data = feedparser.parse(feed)
+for feed_url in RSS_FEEDS:
+    print(f"Crawling: {feed_url}")
 
-    for item in data.entries[:10]:
+    feed = feedparser.parse(feed_url)
+
+    for entry in feed.entries:
 
         article = {
-            "title": item.title,
-            "url": item.link,
-            "published": item.get("published", ""),
+            "title": entry.get("title", ""),
+            "url": entry.get("link", ""),
+            "published": entry.get("published", ""),
             "summary": "",
             "image": "",
-            "source": feed
+            "source": feed.feed.get("title", "")
         }
 
         try:
-            html = requests.get(item.link, timeout=10).text
-            soup = BeautifulSoup(html, "html.parser")
+            response = requests.get(article["url"], timeout=10)
 
-            desc = soup.find("meta", attrs={"name": "description"})
-            img = soup.find("meta", attrs={"property": "og:image"})
+            soup = BeautifulSoup(response.text, "html.parser")
 
-            if desc:
-                article["summary"] = desc.get("content", "")
+            description = soup.find("meta", attrs={"name": "description"})
+            if description:
+                article["summary"] = description.get("content", "")
 
-            if img:
-                article["image"] = img.get("content", "")
+            image = soup.find("meta", attrs={"property": "og:image"})
+            if image:
+                article["image"] = image.get("content", "")
 
-        except:
-            pass
+        except Exception as e:
+            print(e)
 
         articles.append(article)
+
+print(f"Total Articles: {len(articles)}")
 
 with open("articles.json", "w", encoding="utf-8") as f:
     json.dump(articles, f, ensure_ascii=False, indent=2)
 
-print("Saved", len(articles), "articles.")
+print("articles.json created successfully ✅")
