@@ -5,13 +5,12 @@ let allArticles = [];
 
 
 // ============================
-// Fetch Articles
+// FETCH ARTICLES
 // ============================
 
 async function fetchArticles(){
 
     try{
-
 
         const response = await fetch(
             "./articles.json?cache=" + Date.now()
@@ -20,7 +19,7 @@ async function fetchArticles(){
 
         if(!response.ok){
 
-            throw new Error("JSON file not found");
+            throw new Error("JSON not found");
 
         }
 
@@ -28,29 +27,25 @@ async function fetchArticles(){
         const data = await response.json();
 
 
-
         allArticles = data;
 
 
 
-        // Latest articles first
+        // Latest first
 
         allArticles.sort((a,b)=>{
 
-            return new Date(b.created_at) - new Date(a.created_at);
+            return new Date(b.created_at || b.published)
+            -
+            new Date(a.created_at || a.published);
 
         });
 
 
 
-        // Random feed on refresh
-
-        const freshFeed = shuffleArticles(allArticles);
-
-
-
-        displayArticles(freshFeed);
-
+        displayArticles(
+            createFeed()
+        );
 
 
     }
@@ -58,7 +53,7 @@ async function fetchArticles(){
 
     catch(error){
 
-        console.error(error);
+        console.log(error);
 
 
         feed.innerHTML = `
@@ -82,19 +77,25 @@ async function fetchArticles(){
 
 
 
-
-
 // ============================
-// Shuffle Feed
+// FEED ALGORITHM
 // ============================
 
+function createFeed(){
 
-function shuffleArticles(array){
+
+    let articles=[...allArticles];
 
 
-    return [...array].sort(
+    // mix latest + random
 
-        ()=> Math.random() - 0.5
+    let latest = articles.slice(0,50);
+
+
+
+    return latest.sort(
+
+        ()=> Math.random()-0.5
 
     );
 
@@ -103,10 +104,8 @@ function shuffleArticles(array){
 
 
 
-
-
 // ============================
-// Create Cards
+// DISPLAY FEED
 // ============================
 
 
@@ -123,80 +122,131 @@ function displayArticles(articles){
         const card=document.createElement("article");
 
 
-        card.className="card";
+        card.className="post";
 
 
 
-        card.innerHTML = `
+        card.innerHTML=`
 
 
-        <img
+        <!-- IMAGE -->
 
-        src="${article.image}"
-
-        alt="${article.title}"
-
-        loading="lazy"
-
-        >
+        <div class="post-image">
 
 
+            <img
 
-        <div class="card-content">
+            src="${article.image}"
 
+            alt="${article.title}"
 
-        <span class="category">
+            loading="lazy"
 
-        ${article.category || "Luxury"}
-
-        </span>
-
-
-
-        <h2>
-
-        ${article.title}
-
-        </h2>
-
-
-
-        <p>
-
-        ${article.description || ""}
-
-        </p>
-
-
-
-        <div class="card-info">
-
-
-        <span>
-
-        ✍️ ${article.author || article.source}
-
-        </span>
-
-
-
-        <span>
-
-        👁 ${article.views || 0}
-
-        </span>
-
-
-
-        <span>
-
-        ❤️ ${article.likes || 0}
-
-        </span>
-
+            >
 
 
         </div>
+
+
+
+
+        <!-- CONTENT -->
+
+
+        <div class="post-body">
+
+
+            <div class="category">
+
+            ${article.category || "Luxury"}
+
+            </div>
+
+
+
+            <h2>
+
+            ${article.title}
+
+            </h2>
+
+
+
+            <p>
+
+            ${article.description || ""}
+
+            </p>
+
+
+
+
+            <!-- ACTIONS -->
+
+
+            <div class="actions">
+
+
+                <button>
+
+                ❤️
+
+                </button>
+
+
+
+                <button>
+
+                💬
+
+                </button>
+
+
+
+                <button>
+
+                🔗
+
+                </button>
+
+
+
+                <button>
+
+                🔖
+
+                </button>
+
+
+            </div>
+
+
+
+
+
+            <div class="stats">
+
+
+            👁 ${article.views || 0}
+
+            &nbsp;&nbsp;
+
+            ❤️ ${article.likes || 0}
+
+
+
+            </div>
+
+
+
+
+
+            <div class="source">
+
+
+            ${article.source || "QRABES"}
+
+            </div>
 
 
         </div>
@@ -213,15 +263,13 @@ function displayArticles(articles){
     });
 
 
-
 }
 
 
 
 
-
 // ============================
-// Search
+// SEARCH
 // ============================
 
 
@@ -232,23 +280,21 @@ if(searchBox){
 
 
 searchBox.addEventListener(
-
 "input",
 
-function(){
+()=>{
 
 
-const value=this.value.toLowerCase();
+let value=
+searchBox.value.toLowerCase();
 
 
 
-const result=allArticles.filter(article=>
+let result=allArticles.filter(article=>
 
 
 article.title
-
 .toLowerCase()
-
 .includes(value)
 
 
@@ -263,8 +309,6 @@ displayArticles(result);
 
 }
 
-
-
 );
 
 
@@ -273,9 +317,8 @@ displayArticles(result);
 
 
 
-
 // ============================
-// Category Filter
+// CATEGORY FILTER
 // ============================
 
 
@@ -295,7 +338,8 @@ button.addEventListener(
 ()=>{
 
 
-const category=button.dataset.category;
+let category=
+button.dataset.category;
 
 
 
@@ -303,19 +347,17 @@ if(category==="All"){
 
 
 displayArticles(
-
-shuffleArticles(allArticles)
-
+createFeed()
 );
 
 
 }
 
-
 else{
 
 
-const filtered=allArticles.filter(article=>
+let result =
+allArticles.filter(article=>
 
 
 article.category===category
@@ -325,7 +367,7 @@ article.category===category
 
 
 
-displayArticles(filtered);
+displayArticles(result);
 
 
 
@@ -334,11 +376,8 @@ displayArticles(filtered);
 
 
 }
-
-
 
 );
-
 
 
 });
@@ -346,7 +385,8 @@ displayArticles(filtered);
 
 
 
-
-// Start
+// ============================
+// START
+// ============================
 
 fetchArticles();
