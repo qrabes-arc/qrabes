@@ -1,0 +1,568 @@
+:root{
+
+    --bg:#0a0a0a;
+    --bg2:#111111;
+    --card:#181818;
+
+    --white:#ffffff;
+    --text:#d7d7d7;
+    --muted:#8f8f8f;
+
+    --gold:#d4af37;
+
+    --border:rgba(255,255,255,.08);
+
+    --radius:18px;
+
+    --transition:.30s ease;
+
+    --shadow:0 15px 40px rgba(0,0,0,.45);
+
+    --header-height:72px;
+
+}
+
+/*========================
+ Reset
+=========================*/
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+body{
+
+    background:var(--bg);
+
+    color:var(--white);
+
+    font-family:
+    Inter,
+    Arial,
+    Helvetica,
+    sans-serif;
+
+    overflow-x:hidden;
+
+}
+
+/*========================
+ Links
+=========================*/
+
+a{
+
+    text-decoration:none;
+
+    color:inherit;
+
+}
+
+button{
+
+    border:none;
+
+    cursor:pointer;
+
+    background:none;
+
+    color:inherit;
+
+}
+
+img{
+
+    width:100%;
+
+    display:block;
+
+}
+
+/*========================
+ Container
+=========================*/
+
+.container{
+
+    width:95%;
+
+    max-width:1500px;
+
+    margin:auto;
+
+}
+
+/*=========================================
+ Header
+=========================================*/
+
+.header{
+
+    position:sticky;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    z-index:999;
+
+    backdrop-filter:blur(18px);
+
+    background:rgba(10,10,10,.78);
+
+    border-bottom:1px solid var(--border);
+
+}
+
+/*========================
+ Top Header
+=========================*/
+
+.top-header{
+
+    height:72px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 35px;
+
+}
+
+/*========================
+ Logo
+=========================*/
+
+.logo a{
+
+    font-size:32px;
+
+    font-weight:700;
+
+    letter-spacing:10px;
+
+    color:white;
+
+}
+
+/*========================
+ Navigation
+=========================*/
+
+.desktop-nav{
+
+    display:flex;
+
+    gap:35px;
+
+}
+
+.desktop-nav a{
+
+    color:var(--muted);
+
+    font-size:15px;
+
+    transition:var(--transition);
+
+    position:relative;
+
+}
+
+.desktop-nav a:hover{
+
+    color:white;
+
+}
+
+.desktop-nav a::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    bottom:-8px;
+
+    width:0;
+
+    height:2px;
+
+    background:var(--gold);
+
+    transition:.35s;
+
+}
+
+.desktop-nav a:hover::after{
+
+    width:100%;
+
+}
+
+/*========================
+ Search
+=========================*/
+
+.search-box{
+
+    width:360px;
+
+}
+
+.search-box input{
+
+    width:100%;
+
+    height:46px;
+
+    border-radius:50px;
+
+    border:1px solid var(--border);
+
+    background:#1a1a1a;
+
+    color:white;
+
+    padding:0 22px;
+
+    outline:none;
+
+    transition:.3s;
+
+}
+
+.search-box input:focus{
+
+    border-color:var(--gold);
+
+    background:#202020;
+
+}
+
+/*========================
+ Right Icons
+=========================*/
+
+.header-icons{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+.header-icons button{
+
+    width:44px;
+
+    height:44px;
+
+    border-radius:50%;
+
+    background:#181818;
+
+    transition:.3s;
+
+    font-size:18px;
+
+}
+
+.header-icons button:hover{
+
+    background:#2a2a2a;
+
+    transform:translateY(-2px);
+
+}
+
+/*=========================================
+ Bottom Header
+=========================================*/
+
+.bottom-header{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:26px;
+
+    overflow-x:auto;
+
+    white-space:nowrap;
+
+    padding:14px 35px;
+
+    border-top:1px solid rgba(255,255,255,.04);
+
+}
+
+.bottom-header::-webkit-scrollbar{
+
+    display:none;
+
+}
+
+.bottom-header a{
+
+    color:#bfbfbf;
+
+    font-size:14px;
+
+    transition:.3s;
+
+}
+
+.bottom-header a:hover{
+
+    color:var(--gold);
+
+}
+
+/*=========================================
+ Responsive
+=========================================*/
+
+@media(max-width:1100px){
+
+.desktop-nav{
+
+display:none;
+
+}
+
+.search-box{
+
+display:none;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.top-header{
+
+padding:0 18px;
+
+}
+
+.logo a{
+
+font-size:24px;
+
+letter-spacing:6px;
+
+}
+
+.bottom-header{
+
+padding:12px 18px;
+
+gap:20px;
+
+}
+
+}
+/*=========================================
+ HERO SECTION
+=========================================*/
+
+.hero{
+
+    position:relative;
+
+    width:100%;
+
+    height:92vh;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    overflow:hidden;
+
+    background:
+    linear-gradient(
+    rgba(0,0,0,.55),
+    rgba(0,0,0,.80)
+    ),
+    url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1800");
+
+    background-size:cover;
+
+    background-position:center;
+
+}
+
+.hero-overlay{
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+    radial-gradient(circle at center,
+    transparent,
+    rgba(0,0,0,.55));
+
+}
+
+.hero-content{
+
+    position:relative;
+
+    z-index:10;
+
+    width:90%;
+
+    max-width:900px;
+
+    text-align:center;
+
+}
+
+.hero-tag{
+
+    display:inline-block;
+
+    padding:10px 18px;
+
+    border:1px solid rgba(255,255,255,.15);
+
+    border-radius:999px;
+
+    color:#d4af37;
+
+    letter-spacing:2px;
+
+    font-size:12px;
+
+    margin-bottom:30px;
+
+    backdrop-filter:blur(10px);
+
+}
+
+.hero h1{
+
+    font-size:72px;
+
+    line-height:1.1;
+
+    margin-bottom:30px;
+
+    font-weight:700;
+
+}
+
+.hero p{
+
+    max-width:700px;
+
+    margin:auto;
+
+    color:#d0d0d0;
+
+    line-height:1.8;
+
+    font-size:18px;
+
+}
+
+.hero-buttons{
+
+    margin-top:45px;
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:20px;
+
+    flex-wrap:wrap;
+
+}
+
+.btn-primary{
+
+    background:#d4af37;
+
+    color:#000;
+
+    padding:16px 34px;
+
+    border-radius:999px;
+
+    font-weight:700;
+
+    transition:.3s;
+
+}
+
+.btn-primary:hover{
+
+    transform:translateY(-4px);
+
+}
+
+.btn-secondary{
+
+    border:1px solid rgba(255,255,255,.2);
+
+    padding:16px 34px;
+
+    border-radius:999px;
+
+    backdrop-filter:blur(10px);
+
+    transition:.3s;
+
+}
+
+.btn-secondary:hover{
+
+    background:rgba(255,255,255,.08);
+
+}
+
+@media(max-width:768px){
+
+.hero{
+
+height:75vh;
+
+}
+
+.hero h1{
+
+font-size:42px;
+
+}
+
+.hero p{
+
+font-size:16px;
+
+}
+
+}
