@@ -2,7 +2,7 @@ let articles=[];
 
 
 const url =
-"https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/articles.json";
+"https://raw.githubusercontent.com/qrabes-arc/qrabes/refs/heads/main/articles.json";
 
 
 
