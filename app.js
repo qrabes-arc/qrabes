@@ -4,13 +4,18 @@ const loading = document.getElementById("loading");
 let allArticles = [];
 
 
-// Fetch JSON Data
+// ============================
+// Fetch Articles
+// ============================
 
 async function fetchArticles(){
 
     try{
 
-        const response = await fetch("./articles.json");
+
+        const response = await fetch(
+            "./articles.json?cache=" + Date.now()
+        );
 
 
         if(!response.ok){
@@ -23,13 +28,33 @@ async function fetchArticles(){
         const data = await response.json();
 
 
+
         allArticles = data;
 
 
-        displayArticles(allArticles);
+
+        // Latest articles first
+
+        allArticles.sort((a,b)=>{
+
+            return new Date(b.created_at) - new Date(a.created_at);
+
+        });
+
+
+
+        // Random feed on refresh
+
+        const freshFeed = shuffleArticles(allArticles);
+
+
+
+        displayArticles(freshFeed);
+
 
 
     }
+
 
     catch(error){
 
@@ -37,9 +62,11 @@ async function fetchArticles(){
 
 
         feed.innerHTML = `
-            <h2>
-            Failed to load stories
-            </h2>
+
+        <h2>
+        Failed to load stories
+        </h2>
+
         `;
 
     }
@@ -47,7 +74,7 @@ async function fetchArticles(){
 
     finally{
 
-        loading.style.display = "none";
+        loading.style.display="none";
 
     }
 
@@ -56,156 +83,266 @@ async function fetchArticles(){
 
 
 
-// Create Cards
 
-function displayArticles(articles){
-
-
-    feed.innerHTML = "";
+// ============================
+// Shuffle Feed
+// ============================
 
 
-    articles.forEach(article => {
+function shuffleArticles(array){
 
 
-        const card = document.createElement("article");
+    return [...array].sort(
 
+        ()=> Math.random() - 0.5
 
-        card.className = "card";
-
-
-        card.innerHTML = `
-
-        <img 
-        src="${article.image}"
-        alt="${article.title}"
-        >
-
-
-        <div class="card-content">
-
-
-            <span class="category">
-            ${article.category}
-            </span>
-
-
-            <h2>
-            ${article.title}
-            </h2>
-
-
-            <p>
-            ${article.description}
-            </p>
-
-
-            <div class="card-info">
-
-
-                <span>
-                ✍️ ${article.author}
-                </span>
-
-
-                <span>
-                👁 ${article.views}
-                </span>
-
-
-                <span>
-                ❤️ ${article.likes}
-                </span>
-
-
-            </div>
-
-
-        </div>
-
-        `;
-
-
-        feed.appendChild(card);
-
-
-    });
+    );
 
 
 }
 
 
 
-// Search
 
-const searchBox = document.getElementById("search");
+
+// ============================
+// Create Cards
+// ============================
+
+
+function displayArticles(articles){
+
+
+    feed.innerHTML="";
+
+
+
+    articles.forEach(article=>{
+
+
+        const card=document.createElement("article");
+
+
+        card.className="card";
+
+
+
+        card.innerHTML = `
+
+
+        <img
+
+        src="${article.image}"
+
+        alt="${article.title}"
+
+        loading="lazy"
+
+        >
+
+
+
+        <div class="card-content">
+
+
+        <span class="category">
+
+        ${article.category || "Luxury"}
+
+        </span>
+
+
+
+        <h2>
+
+        ${article.title}
+
+        </h2>
+
+
+
+        <p>
+
+        ${article.description || ""}
+
+        </p>
+
+
+
+        <div class="card-info">
+
+
+        <span>
+
+        ✍️ ${article.author || article.source}
+
+        </span>
+
+
+
+        <span>
+
+        👁 ${article.views || 0}
+
+        </span>
+
+
+
+        <span>
+
+        ❤️ ${article.likes || 0}
+
+        </span>
+
+
+
+        </div>
+
+
+        </div>
+
+
+        `;
+
+
+
+        feed.appendChild(card);
+
+
+
+    });
+
+
+
+}
+
+
+
+
+
+// ============================
+// Search
+// ============================
+
+
+const searchBox=document.getElementById("search");
+
+
+if(searchBox){
 
 
 searchBox.addEventListener(
+
 "input",
+
 function(){
 
 
-const value = this.value.toLowerCase();
+const value=this.value.toLowerCase();
 
 
-const result = allArticles.filter(article =>
 
-article.title.toLowerCase().includes(value)
+const result=allArticles.filter(article=>
+
+
+article.title
+
+.toLowerCase()
+
+.includes(value)
+
+
 
 );
+
 
 
 displayArticles(result);
 
 
-});
+
+}
+
+
+
+);
+
+
+}
 
 
 
 
+
+// ============================
 // Category Filter
+// ============================
 
-const buttons = document.querySelectorAll(
+
+const buttons=document.querySelectorAll(
 ".categories button"
 );
+
 
 
 buttons.forEach(button=>{
 
 
 button.addEventListener(
+
 "click",
+
 ()=>{
 
 
-const category = button.dataset.category;
+const category=button.dataset.category;
 
 
-if(category === "All"){
 
-displayArticles(allArticles);
+if(category==="All"){
+
+
+displayArticles(
+
+shuffleArticles(allArticles)
+
+);
+
 
 }
+
 
 else{
 
 
-const filtered = allArticles.filter(article=>
+const filtered=allArticles.filter(article=>
 
-article.category === category
+
+article.category===category
+
 
 );
+
 
 
 displayArticles(filtered);
 
 
+
 }
 
 
-});
+
+}
+
+
+
+);
+
+
 
 });
+
 
 
 
