@@ -1,26 +1,39 @@
-name: Run Crawler
+import feedparser
+import requests
+from bs4 import BeautifulSoup
 
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: "0 * * * *"
+RSS_FEEDS = [
+    "https://www.vogue.com/feed/rss",
+    "https://www.architecturaldigest.com/feed/rss"
+]
 
-permissions:
-  contents: read
+articles = []
 
-jobs:
-  crawl:
-    runs-on: ubuntu-latest
+for feed in RSS_FEEDS:
+    data = feedparser.parse(feed)
 
-    steps:
-      - uses: actions/checkout@v4
+    for item in data.entries:
+        article = {
+            "title": item.title,
+            "url": item.link,
+            "published": item.get("published", "")
+        }
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
+        try:
+            html = requests.get(item.link, timeout=10).text
+            soup = BeautifulSoup(html, "html.parser")
 
-      - run: |
-          python -m pip install --upgrade pip
-          pip install feedparser requests beautifulsoup4
+            description = soup.find("meta", attrs={"name": "description"})
+            image = soup.find("meta", attrs={"property": "og:image"})
 
-      - run: python crawler.py
+            article["summary"] = description["content"] if description else ""
+            article["image"] = image["content"] if image else ""
+
+        except Exception:
+            article["summary"] = ""
+            article["image"] = ""
+
+        articles.append(article)
+
+for article in articles:
+    print(article)
