@@ -310,22 +310,56 @@ stroke-linecap="round"
 
 
 <button class="share">
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 
-<svg viewBox="0 0 24 24">
-<path d="M18 8l4 4-4 4M22 12H9"/>
+<path
+
+d="M18 8L22 12L18 16"
+
+fill="none"
+
+stroke="white"
+
+stroke-width="1.8"
+
+stroke-linecap="round"
+
+stroke-linejoin="round"/>
+
+
+<path
+
+d="M22 12H10"
+
+fill="none"
+
+stroke="white"
+
+stroke-width="1.8"
+
+stroke-linecap="round"/>
+
+
+<path
+
+d="M14 5V4C14 3.45 13.55 3 13 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H13C13.55 21 14 20.55 14 20V19"
+
+fill="none"
+
+stroke="white"
+
+stroke-width="1.8"
+
+stroke-linecap="round"
+
+stroke-linejoin="round"/>
+
 </svg>
 
 </button>
 
 
 
-<button class="bookmark">
-
-<svg viewBox="0 0 24 24">
-<path d="M6 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18l-6-4-6 4z"/>
-</svg>
-
-</button>
 
 
 </div>
