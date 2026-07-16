@@ -204,11 +204,7 @@ onerror="this.src='${FALLBACK_IMAGE}'"
 
 <div class="post-body">
 
-<div class="category">
 
-${article.category || "Luxury"}
-
-</div>
 
 
 
