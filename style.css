@@ -511,3 +511,56 @@ margin-bottom:15px;
 
 
 }
+
+
+
+
+
+
+/* MOBILE MENU */
+
+.menu-btn{
+    display:none;
+    font-size:26px;
+}
+
+
+@media(max-width:900px){
+
+    .desktop-nav{
+
+        position:absolute;
+        top:72px;
+        left:0;
+
+        width:100%;
+
+        background:#111;
+
+        display:none;
+
+        flex-direction:column;
+
+        padding:25px;
+
+        gap:25px;
+
+        border-bottom:1px solid rgba(255,255,255,.1);
+
+    }
+
+
+    .desktop-nav.active{
+
+        display:flex;
+
+    }
+
+
+    .menu-btn{
+
+        display:block;
+
+    }
+
+}
