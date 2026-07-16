@@ -641,114 +641,6 @@ opacity:.5;
 }
 
 
-
-
-
-
-
-
-/*=========================================
- QRABES MOBILE FULL FEED CARD
-=========================================*/
-
-
-#feed{
-
-    width:95%;
-
-    max-width:1200px;
-
-    margin:40px auto;
-
-}
-
-
-
-/* POST CARD */
-
-.post{
-
-    width:100%;
-
-    background:#111;
-
-    border:1px solid rgba(255,255,255,.08);
-
-    border-radius:22px;
-
-    padding:14px;
-
-    margin-bottom:25px;
-
-    overflow:hidden;
-
-}
-
-
-
-/* IMAGE */
-
-.post-image{
-
-    width:100%;
-
-    overflow:hidden;
-
-    border-radius:18px;
-
-}
-
-
-.post-image img{
-
-    width:100%;
-
-    height:auto;
-
-    display:block;
-
-    object-fit:cover;
-
-}
-
-
-
-/* CONTENT */
-
-.post-body{
-
-    padding:18px 8px 10px;
-
-}
-
-
-.post h2{
-
-    color:#fff;
-
-    font-size:22px;
-
-    line-height:1.35;
-
-}
-
-
-.post p{
-
-    color:#aaa;
-
-    font-size:15px;
-
-    line-height:1.6;
-
-    margin-top:10px;
-
-}
-
-
-
-/* MOBILE FULL SCREEN */
-
 @media(max-width:700px){
 
 
@@ -774,11 +666,15 @@ opacity:.5;
 
         border-radius:0;
 
-        border-left:0;
+        border-left:none;
 
-        border-right:0;
+        border-right:none;
+
+        border-top:none;
 
         border-bottom:1px solid rgba(255,255,255,.08);
+
+        background:#111;
 
     }
 
@@ -788,7 +684,11 @@ opacity:.5;
 
         width:100%;
 
+        aspect-ratio:auto;
+
         border-radius:0;
+
+        overflow:hidden;
 
     }
 
@@ -799,6 +699,10 @@ opacity:.5;
         width:100%;
 
         height:auto;
+
+        display:block;
+
+        object-fit:cover;
 
         border-radius:0;
 
@@ -818,13 +722,23 @@ opacity:.5;
 
         font-size:20px;
 
+        line-height:1.4;
+
+        margin:0;
+
     }
 
 
 
     .post p{
 
+        margin-top:10px;
+
         font-size:15px;
+
+        line-height:1.6;
+
+        color:#aaa;
 
     }
 
@@ -832,12 +746,53 @@ opacity:.5;
 
     .actions{
 
-        margin-top:15px;
+        display:flex;
+
+        align-items:center;
+
+        gap:22px;
+
+        margin-top:16px;
+
+        padding-bottom:16px;
+
+    }
+
+
+
+    .actions button{
+
+        width:35px;
+
+        height:35px;
+
+        display:flex;
+
+        align-items:center;
+
+        justify-content:center;
+
+    }
+
+
+
+    .source{
+
+        padding-bottom:16px;
+
+        font-size:13px;
+
+        color:#888;
 
     }
 
 
 }
+
+
+
+
+
 
 
 
