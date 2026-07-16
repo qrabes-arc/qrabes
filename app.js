@@ -273,17 +273,6 @@ Read More
 </div>
 
 
-
-<div class="source">
-
-${article.source || "QRABES"}
-
-</div>
-
-
-
-
-
 <div class="source">
 
 ${article.source || "QRABES"}
