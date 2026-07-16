@@ -643,10 +643,31 @@ opacity:.5;
 
 
 
+/*=========================================
+ QRABES POST CARD SYSTEM
+=========================================*/
 
+
+#feed{
+
+    width:95%;
+
+    max-width:1200px;
+
+    margin:40px auto;
+
+}
+
+
+
+/*=========================================
+ POST CARD
+=========================================*/
 
 
 .post{
+
+    width:100%;
 
     background:#111;
 
@@ -660,20 +681,39 @@ opacity:.5;
 
     overflow:hidden;
 
-    transition:.3s;
+    transition:.3s ease;
 
 }
+
+
+
+.post:hover{
+
+    transform:translateY(-4px);
+
+    border-color:rgba(212,175,55,.35);
+
+}
+
+
+
+/*=========================================
+ IMAGE
+=========================================*/
+
+
 .post-image{
 
     width:100%;
 
     aspect-ratio:1/1;
 
-    border-radius:18px;
-
     overflow:hidden;
 
+    border-radius:18px;
+
 }
+
 
 
 .post-image img{
@@ -684,32 +724,44 @@ opacity:.5;
 
     object-fit:cover;
 
+    display:block;
+
     border-radius:18px;
 
 }
+
+
+
+/*=========================================
+ CONTENT
+=========================================*/
+
+
 .post-body{
 
-    padding:18px 8px 8px;
+    padding:18px 8px 10px;
 
 }
+
 
 
 .post h2{
 
-    font-size:20px;
+    color:#fff;
 
-    line-height:1.35;
+    font-size:22px;
 
     font-weight:700;
 
-    color:white;
+    line-height:1.35;
+
+    margin:0;
 
 }
 
 
-.post p{
 
-    margin-top:10px;
+.post p{
 
     color:#aaa;
 
@@ -717,37 +769,102 @@ opacity:.5;
 
     line-height:1.6;
 
+    margin-top:12px;
+
 }
 
 
+
+/*=========================================
+ ACTION BUTTONS
+=========================================*/
+
+
+.actions{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    margin-top:18px;
+
+}
+
+
+
+.actions button{
+
+    width:32px;
+
+    height:32px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+
+
+/*=========================================
+ SOURCE
+=========================================*/
+
+
+.source{
+
+    margin-top:16px;
+
+    padding-top:12px;
+
+    border-top:1px solid rgba(255,255,255,.08);
+
+    color:#888;
+
+    font-size:13px;
+
+}
+
+
+
+/*=========================================
+ MOBILE
+=========================================*/
+
+
 @media(max-width:700px){
+
 
     #feed{
 
         width:100%;
 
-        padding:14px;
+        max-width:none;
+
+        padding:12px;
 
         margin:0 auto;
 
     }
 
 
+
     .post{
 
         width:100%;
 
-        background:#111;
-
-        border-radius:22px;
-
         padding:12px;
+
+        border-radius:20px;
 
         margin-bottom:18px;
 
-        border:1px solid rgba(255,255,255,.08);
-
     }
+
 
 
     .post-image{
@@ -756,53 +873,47 @@ opacity:.5;
 
         aspect-ratio:1/1;
 
-        border-radius:18px;
-
-        overflow:hidden;
+        border-radius:16px;
 
     }
+
 
 
     .post-image img{
 
-        width:100%;
-
-        height:100%;
-
-        object-fit:cover;
-
-        border-radius:18px;
+        border-radius:16px;
 
     }
+
 
 
     .post-body{
 
-        padding:16px 8px 10px;
+        padding:16px 6px 8px;
 
     }
+
 
 
     .post h2{
 
         font-size:20px;
 
-        line-height:1.35;
+        line-height:1.4;
 
     }
+
 
 
     .post p{
 
         font-size:15px;
 
-        line-height:1.6;
-
-        color:#aaa;
-
     }
 
 }
+
+
 
 
 
