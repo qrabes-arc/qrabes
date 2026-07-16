@@ -1,14 +1,35 @@
+// ==========================================
+// QRABES APP.JS (PART 1)
+// Foundation + Feed Engine
+// ==========================================
+
 const feed = document.getElementById("feed");
 const loading = document.getElementById("loading");
 
 let allArticles = [];
+let filteredArticles = [];
+
+let currentPage = 0;
+const POSTS_PER_LOAD = 20;
+
+let isLoading = false;
 
 
-// ============================
+// ==========================================
+// FALLBACK IMAGE
+// ==========================================
+
+const FALLBACK_IMAGE =
+"https://placehold.co/900x700/111111/FFFFFF?text=QRABES";
+
+
+// ==========================================
 // FETCH ARTICLES
-// ============================
+// ==========================================
 
 async function fetchArticles(){
+
+    loading.style.display="block";
 
     try{
 
@@ -16,56 +37,63 @@ async function fetchArticles(){
             "./articles.json?cache=" + Date.now()
         );
 
-
         if(!response.ok){
 
-            throw new Error("JSON not found");
+            throw new Error("Unable to load JSON");
 
         }
 
-
         const data = await response.json();
 
+        // remove invalid records
 
-        allArticles = data;
+        allArticles = data.filter(article=>{
 
-
-
-        // Latest first
-
-        allArticles.sort((a,b)=>{
-
-            return new Date(b.created_at || b.published)
-            -
-            new Date(a.created_at || a.published);
+            return article &&
+                   article.title &&
+                   article.image;
 
         });
 
 
+        // latest first
 
-        displayArticles(
-            createFeed()
-        );
+        allArticles.sort((a,b)=>{
 
+            return new Date(
+                b.created_at || b.published || 0
+            )
+
+            -
+
+            new Date(
+                a.created_at || a.published || 0
+            );
+
+        });
+
+
+        filteredArticles=[...allArticles];
+
+        resetFeed();
 
     }
 
-
     catch(error){
 
-        console.log(error);
+        console.error(error);
 
+        feed.innerHTML=`
 
-        feed.innerHTML = `
+        <div class="error">
 
-        <h2>
-        Failed to load stories
-        </h2>
+            Failed to load feed.
+
+        </div>
 
         `;
 
     }
-
 
     finally{
 
@@ -77,316 +105,204 @@ async function fetchArticles(){
 
 
 
-// ============================
-// FEED ALGORITHM
-// ============================
+// ==========================================
+// RESET FEED
+// ==========================================
 
-function createFeed(){
-
-
-    let articles=[...allArticles];
-
-
-    // mix latest + random
-
-    let latest = articles.slice(0,50);
-
-
-
-    return latest.sort(
-
-        ()=> Math.random()-0.5
-
-    );
-
-
-}
-
-
-
-// ============================
-// DISPLAY FEED
-// ============================
-
-
-function displayArticles(articles){
-
+function resetFeed(){
 
     feed.innerHTML="";
 
+    currentPage=0;
 
+    loadMorePosts();
 
-    articles.forEach(article=>{
+}
 
 
-        const card=document.createElement("article");
 
+// ==========================================
+// LOAD NEXT POSTS
+// ==========================================
 
-        card.className="post";
+function loadMorePosts(){
 
+    if(isLoading) return;
 
+    isLoading=true;
 
-        card.innerHTML=`
+    const start=currentPage*POSTS_PER_LOAD;
 
+    const end=start+POSTS_PER_LOAD;
 
-        <!-- IMAGE -->
+    const posts=filteredArticles.slice(start,end);
 
-        <div class="post-image">
+    posts.forEach(article=>{
 
-
-            <img
-
-            src="${article.image}"
-
-            alt="${article.title}"
-
-            loading="lazy"
-
-            >
-
-
-        </div>
-
-
-
-
-        <!-- CONTENT -->
-
-
-        <div class="post-body">
-
-
-            <div class="category">
-
-            ${article.category || "Luxury"}
-
-            </div>
-
-
-
-            <h2>
-
-            ${article.title}
-
-            </h2>
-
-
-
-            <p>
-
-            ${article.description || ""}
-
-            </p>
-
-
-
-
-            <!-- ACTIONS -->
-
-
-            <div class="actions">
-
-
-                <button>
-
-                ❤️
-
-                </button>
-
-
-
-                <button>
-
-                💬
-
-                </button>
-
-
-
-                <button>
-
-                🔗
-
-                </button>
-
-
-
-                <button>
-
-                🔖
-
-                </button>
-
-
-            </div>
-
-
-
-
-
-            <div class="stats">
-
-
-            👁 ${article.views || 0}
-
-            &nbsp;&nbsp;
-
-            ❤️ ${article.likes || 0}
-
-
-
-            </div>
-
-
-
-
-
-            <div class="source">
-
-
-            ${article.source || "QRABES"}
-
-            </div>
-
-
-        </div>
-
-
-        `;
-
-
-
-        feed.appendChild(card);
-
-
+        createCard(article);
 
     });
 
+    currentPage++;
+
+    isLoading=false;
 
 }
 
 
 
+// ==========================================
+// CREATE CARD
+// ==========================================
 
-// ============================
-// SEARCH
-// ============================
+function createCard(article){
 
+    const card=document.createElement("article");
 
-const searchBox=document.getElementById("search");
-
-
-if(searchBox){
-
-
-searchBox.addEventListener(
-"input",
-
-()=>{
+    card.className="post";
 
 
-let value=
-searchBox.value.toLowerCase();
+    const image=
+    article.image &&
+    article.image.trim()!=="" ?
+
+    article.image :
+
+    FALLBACK_IMAGE;
 
 
 
-let result=allArticles.filter(article=>
+    const description=
 
+    (article.description || "")
 
-article.title
-.toLowerCase()
-.includes(value)
-
-
-
-);
+    .substring(0,160);
 
 
 
-displayArticles(result);
+    card.innerHTML=`
+
+<div class="post-image">
+
+<img
+
+src="${image}"
+
+alt="${article.title}"
+
+loading="lazy"
+
+decoding="async"
+
+onerror="this.src='${FALLBACK_IMAGE}'"
+
+>
+
+</div>
 
 
+
+<div class="post-body">
+
+<div class="category">
+
+${article.category || "Luxury"}
+
+</div>
+
+
+
+<h2>
+
+${article.title}
+
+</h2>
+
+
+
+<p>
+
+${description}
+
+</p>
+
+
+
+<div class="actions">
+
+<button>❤️</button>
+
+<button>💬</button>
+
+<button>🔗</button>
+
+<button>🔖</button>
+
+</div>
+
+
+
+<div class="stats">
+
+👁 ${article.views || 0}
+
+&nbsp;&nbsp;
+
+❤️ ${article.likes || 0}
+
+</div>
+
+
+
+<div class="source">
+
+${article.source || "QRABES"}
+
+</div>
+
+</div>
+
+`;
+
+    feed.appendChild(card);
 
 }
 
-);
 
 
-}
+// ==========================================
+// INFINITE SCROLL
+// ==========================================
 
+window.addEventListener("scroll",()=>{
 
+    const scrollTop=
+    window.scrollY;
 
+    const viewport=
+    window.innerHeight;
 
-// ============================
-// CATEGORY FILTER
-// ============================
+    const height=
+    document.body.offsetHeight;
 
+    if(
 
-const buttons=document.querySelectorAll(
-".categories button"
-);
+        scrollTop+viewport>
 
+        height-800
 
+    ){
 
-buttons.forEach(button=>{
+        loadMorePosts();
 
-
-button.addEventListener(
-
-"click",
-
-()=>{
-
-
-let category=
-button.dataset.category;
-
-
-
-if(category==="All"){
-
-
-displayArticles(
-createFeed()
-);
-
-
-}
-
-else{
-
-
-let result =
-allArticles.filter(article=>
-
-
-article.category===category
-
-
-);
-
-
-
-displayArticles(result);
-
-
-
-}
-
-
-
-}
-
-);
-
+    }
 
 });
 
 
 
-
-// ============================
+// ==========================================
 // START
-// ============================
+// ==========================================
 
 fetchArticles();
