@@ -234,9 +234,31 @@ ${description}
 
 <button>💬</button>
 
-<button>🔗</button>
+<button
+class="share"
+data-url="${article.url || '#'}"
+data-title="${article.title}"
+>
+🔗
+</button>
 
-<button>🔖</button>
+
+<button
+class="bookmark"
+data-url="${article.url || ''}"
+>
+🔖
+</button>
+
+
+<button
+class="read-more"
+data-url="${article.url || '#'}"
+>
+Read More
+</button>
+
+
 
 </div>
 
