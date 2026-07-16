@@ -310,49 +310,52 @@ stroke-linecap="round"
 
 
 <button class="share">
-<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<svg 
+viewBox="0 0 24 24" 
+xmlns="http://www.w3.org/2000/svg">
+
+<circle
+cx="18"
+cy="5"
+r="2.5"
+fill="none"
+stroke="white"
+stroke-width="1.8"/>
+
+<circle
+cx="6"
+cy="12"
+r="2.5"
+fill="none"
+stroke="white"
+stroke-width="1.8"/>
+
+<circle
+cx="18"
+cy="19"
+r="2.5"
+fill="none"
+stroke="white"
+stroke-width="1.8"/>
+
 
 <path
-
-d="M18 8L22 12L18 16"
-
-fill="none"
-
-stroke="white"
-
-stroke-width="1.8"
-
-stroke-linecap="round"
-
-stroke-linejoin="round"/>
-
-
-<path
-
-d="M22 12H10"
+d="M8.3 10.8L15.7 6.2"
 
 fill="none"
-
 stroke="white"
-
 stroke-width="1.8"
-
 stroke-linecap="round"/>
 
 
 <path
-
-d="M14 5V4C14 3.45 13.55 3 13 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H13C13.55 21 14 20.55 14 20V19"
+d="M8.3 13.2L15.7 17.8"
 
 fill="none"
-
 stroke="white"
-
 stroke-width="1.8"
+stroke-linecap="round"/>
 
-stroke-linecap="round"
-
-stroke-linejoin="round"/>
 
 </svg>
 
