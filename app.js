@@ -531,7 +531,156 @@ window.addEventListener("focus",()=>{
 
 });
 
+// ==========================================
+// SKELETON LOADING
+// ==========================================
 
+function showSkeleton(count = 8){
+
+    feed.innerHTML = "";
+
+    for(let i=0;i<count;i++){
+
+        const skeleton=document.createElement("div");
+
+        skeleton.className="post skeleton";
+
+        skeleton.innerHTML=`
+
+            <div class="skeleton-image"></div>
+
+            <div class="skeleton-body">
+
+                <div class="skeleton-line short"></div>
+
+                <div class="skeleton-line"></div>
+
+                <div class="skeleton-line"></div>
+
+                <div class="skeleton-line small"></div>
+
+            </div>
+
+        `;
+
+        feed.appendChild(skeleton);
+
+    }
+
+}
+
+
+
+// ==========================================
+// HIDE SKELETON
+// ==========================================
+
+function hideSkeleton(){
+
+    document
+    .querySelectorAll(".skeleton")
+    .forEach(card=>{
+
+        card.remove();
+
+    });
+
+}
+
+
+
+// ==========================================
+// BETTER LOAD MORE
+// ==========================================
+
+const observer=new IntersectionObserver(entries=>{
+
+    entries.forEach(entry=>{
+
+        if(entry.isIntersecting){
+
+            loadMorePosts();
+
+        }
+
+    });
+
+},{
+    rootMargin:"600px"
+});
+
+
+
+// ==========================================
+// CREATE OBSERVER
+// ==========================================
+
+const loadTrigger=document.createElement("div");
+
+loadTrigger.id="load-trigger";
+
+document.body.appendChild(loadTrigger);
+
+observer.observe(loadTrigger);
+
+
+
+// ==========================================
+// RETRY IMAGE
+// ==========================================
+
+document.addEventListener("error",(e)=>{
+
+    if(e.target.tagName==="IMG"){
+
+        e.target.src=FALLBACK_IMAGE;
+
+    }
+
+},true);
+
+
+
+// ==========================================
+// OPTIMIZE FEED
+// ==========================================
+
+function optimizeFeed(){
+
+    const cards=
+    document.querySelectorAll(".post");
+
+    if(cards.length>300){
+
+        for(
+
+            let i=0;
+
+            i<100;
+
+            i++
+
+        ){
+
+            cards[i].remove();
+
+        }
+
+    }
+
+}
+
+
+
+// ==========================================
+// AUTO CLEANUP
+// ==========================================
+
+setInterval(()=>{
+
+    optimizeFeed();
+
+},30000);
 // ==========================================
 // START
 // ==========================================
