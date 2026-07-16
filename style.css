@@ -263,8 +263,9 @@ font-weight:600;
 }
 
 
+
 /* =========================
-   SOCIAL ACTION BUTTONS
+   ACTION BUTTONS COMPACT
 ========================= */
 
 .actions{
@@ -273,21 +274,20 @@ font-weight:600;
 
     align-items:center;
 
-    gap:8px;
+    gap:10px;
 
-    margin-top:18px;
+    margin-top:16px;
 
-    height:36px;
+    height:32px;
 
 }
 
 
-
 .actions button{
 
-    width:32px;
+    width:30px;
 
-    height:32px;
+    height:30px;
 
     padding:0;
 
@@ -297,19 +297,14 @@ font-weight:600;
 
     justify-content:center;
 
-    background:transparent;
-
-    border:none;
-
 }
-
 
 
 .actions svg{
 
-    width:23px;
+    width:22px;
 
-    height:23px;
+    height:22px;
 
     display:block;
 
@@ -328,14 +323,11 @@ font-weight:600;
 }
 
 
-
-/* hover */
-
 .actions button:hover svg{
 
     stroke:#d4af37;
 
-    transform:scale(1.12);
+    transform:scale(1.1);
 
 }
 
