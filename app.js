@@ -225,7 +225,12 @@ ${article.title}
 ${description}
 
 </p>
-
+<button 
+class="read-more"
+data-url="${article.url || '#'}"
+>
+Read More
+</button>
 
 <div class="actions">
 
