@@ -10,7 +10,7 @@
 <title>QRABES | Luxury Magazine</title>
 
 
-<link rel="stylesheet" href="style.css">
+<script src="https://cdn.tailwindcss.com"></script>
 
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -19,24 +19,21 @@
 </head>
 
 
-<body>
+<body class="bg-[#0a0a0a] text-white font-[Inter] overflow-x-hidden">
 
 
+<!-- HEADER -->
 
-<!-- =========================
-HEADER
-========================= -->
-
-
-<header class="header">
+<header class="sticky top-0 z-50 bg-black/70 backdrop-blur-xl border-b border-white/10">
 
 
-<div class="top-header">
+<div class="h-[72px] flex items-center justify-between px-5 md:px-10">
 
 
 <div class="logo">
 
-<a href="#">
+<a href="#" 
+class="text-3xl font-bold tracking-[10px]">
 QRABES
 </a>
 
@@ -44,54 +41,62 @@ QRABES
 
 
 
-<nav class="desktop-nav">
+<nav class="hidden lg:flex gap-8 text-gray-400">
 
-<a href="#">Home</a>
+<a class="hover:text-white">
+Home
+</a>
 
-<a href="#">Explore</a>
+<a class="hover:text-white">
+Explore
+</a>
 
-<a href="#">Magazine</a>
+<a class="hover:text-white">
+Magazine
+</a>
 
-<a href="#">Brands</a>
+<a class="hover:text-white">
+Brands
+</a>
 
-<a href="#">Collections</a>
+<a class="hover:text-white">
+Collections
+</a>
 
 </nav>
 
 
 
-<div class="search-box">
-
+<div class="hidden md:block w-[360px]">
 
 <input
 
 id="search"
 
-type="text"
+class="w-full h-11 rounded-full bg-[#181818] border border-white/10 px-5 outline-none focus:border-yellow-500"
 
 placeholder="Search luxury stories..."
 
 >
 
-
 </div>
 
 
 
-<div class="header-icons">
+<div class="flex gap-2">
 
 
-<button>
+<button class="w-11 h-11 rounded-full bg-[#181818]">
 🔔
 </button>
 
 
-<button>
+<button class="w-11 h-11 rounded-full bg-[#181818]">
 👤
 </button>
 
 
-<button id="menu-btn">
+<button class="w-11 h-11 rounded-full bg-[#181818]">
 ☰
 </button>
 
@@ -99,48 +104,45 @@ placeholder="Search luxury stories..."
 </div>
 
 
-
 </div>
 
 
 
 
+<div class="flex gap-6 overflow-x-auto px-5 md:px-10 py-3 border-t border-white/5 whitespace-nowrap">
 
-<div class="bottom-header">
 
-
-<a href="#">
+<a class="text-gray-400">
 Trending
 </a>
 
 
-<a href="#">
+<a class="text-gray-400">
 Fashion
 </a>
 
 
-<a href="#">
+<a class="text-gray-400">
 Lifestyle
 </a>
 
 
-<a href="#">
+<a class="text-gray-400">
 Luxury
 </a>
 
 
-<a href="#">
+<a class="text-gray-400">
 Travel
 </a>
 
 
-<a href="#">
+<a class="text-gray-400">
 Design
 </a>
 
 
 </div>
-
 
 
 </header>
@@ -149,23 +151,22 @@ Design
 
 
 
-<!-- =========================
-HERO
-========================= -->
+<!-- HERO -->
 
 
-<section class="hero">
+<section class="h-[75vh] md:h-[92vh] flex items-center justify-center text-center px-5 bg-cover bg-center"
+style="background-image:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.8)),url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1800')">
 
 
-<div class="hero-content">
+<div>
 
 
-<h1>
+<h1 class="text-5xl md:text-7xl font-bold mb-6">
 Discover Luxury Stories
 </h1>
 
 
-<p>
+<p class="max-w-2xl text-gray-300 text-lg leading-8">
 
 Fashion, lifestyle, brands and inspiring stories from around the world.
 
@@ -181,15 +182,14 @@ Fashion, lifestyle, brands and inspiring stories from around the world.
 
 
 
-<!-- =========================
-FEED
-========================= -->
+<!-- FEED -->
 
 
 <main>
 
 
-<div id="loading">
+<div id="loading" 
+class="text-center py-10 text-gray-400">
 
 Loading Luxury Stories...
 
@@ -197,7 +197,8 @@ Loading Luxury Stories...
 
 
 
-<div id="feed">
+<div id="feed"
+class="w-full md:w-[95%] max-w-[1200px] mx-auto">
 
 </div>
 
@@ -208,20 +209,18 @@ Loading Luxury Stories...
 
 
 
-<!-- =========================
-FOOTER
-========================= -->
+<!-- FOOTER -->
 
 
-<footer>
+<footer class="text-center py-10 border-t border-white/10 mt-10">
 
 
-<h2>
+<h2 class="text-3xl font-bold">
 QRABES
 </h2>
 
 
-<p>
+<p class="text-gray-400 mt-2">
 Luxury Digital Magazine
 </p>
 
@@ -231,8 +230,8 @@ Luxury Digital Magazine
 
 
 
-<script src="app.js"></script>
 
+<script src="app.js"></script>
 
 
 </body>
