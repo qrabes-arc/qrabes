@@ -267,44 +267,63 @@ z">
 
 <button>
 
-
 <svg 
-class="comment-icon" 
-viewBox="0 0 24 24" 
+class="comment-icon"
+viewBox="0 0 24 24"
 xmlns="http://www.w3.org/2000/svg">
-
-<path 
-d="M20.5 11.5C20.5 15.64 16.69 19 12 19C10.9 19 9.84 18.8 8.88 18.45L4 20L5.45 15.95C4.55 14.65 4 13.1 4 11.5C4 7.36 7.81 4 12.5 4C17.19 4 20.5 7.36 20.5 11.5Z"
-
-fill="none"
-
-stroke="white"
-
-stroke-width="1.8"
-
-stroke-linecap="round"
-
-stroke-linejoin="round"
-
-/>
 
 
 <path
 
-d="M8 11.5H16"
+d="M21 11.2C21 15.75 17.1 19.5 12.2 19.5C11.15 19.5 10.15 19.32 9.2 18.98L4 21L5.55 16.55C4.55 15.05 4 13.25 4 11.2C4 6.75 7.9 3.5 12.8 3.5C17.7 3.5 21 6.75 21 11.2Z"
 
 fill="none"
 
 stroke="white"
 
-stroke-width="1.8"
+stroke-width="1.7"
 
 stroke-linecap="round"
 
-/>
+stroke-linejoin="round"/>
+
+
+
+<circle
+
+cx="8.5"
+
+cy="11.5"
+
+r="0.8"
+
+fill="white"/>
+
+
+<circle
+
+cx="12"
+
+cy="11.5"
+
+r="0.8"
+
+fill="white"/>
+
+
+<circle
+
+cx="15.5"
+
+cy="11.5"
+
+r="0.8"
+
+fill="white"/>
 
 
 </svg>
+
 </button>
 
 
