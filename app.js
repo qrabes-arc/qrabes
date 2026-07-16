@@ -681,6 +681,226 @@ setInterval(()=>{
     optimizeFeed();
 
 },30000);
+
+// ==========================================
+// BOOKMARK SYSTEM
+// ==========================================
+
+const bookmarks = JSON.parse(
+    localStorage.getItem("qrabes_bookmarks") || "[]"
+);
+
+feed.addEventListener("click",(e)=>{
+
+    const btn=e.target.closest(".bookmark");
+
+    if(!btn) return;
+
+    const url=btn.dataset.url;
+
+    if(!url) return;
+
+    const index=bookmarks.indexOf(url);
+
+    if(index===-1){
+
+        bookmarks.push(url);
+
+        btn.innerHTML="📌";
+
+    }
+
+    else{
+
+        bookmarks.splice(index,1);
+
+        btn.innerHTML="🔖";
+
+    }
+
+    localStorage.setItem(
+        "qrabes_bookmarks",
+        JSON.stringify(bookmarks)
+    );
+
+});
+
+
+
+// ==========================================
+// SCROLL POSITION
+// ==========================================
+
+window.addEventListener("scroll",()=>{
+
+    localStorage.setItem(
+
+        "feed_scroll",
+
+        window.scrollY
+
+    );
+
+});
+
+
+
+window.addEventListener("load",()=>{
+
+    const pos=parseInt(
+
+        localStorage.getItem("feed_scroll") || 0
+
+    );
+
+    setTimeout(()=>{
+
+        window.scrollTo({
+
+            top:pos,
+
+            behavior:"instant"
+
+        });
+
+    },500);
+
+});
+
+
+
+// ==========================================
+// SAVE CACHE
+// ==========================================
+
+function saveFeedCache(){
+
+    localStorage.setItem(
+
+        "feed_cache",
+
+        JSON.stringify(allArticles)
+
+    );
+
+}
+
+
+
+// ==========================================
+// LOAD CACHE
+// ==========================================
+
+function loadFeedCache(){
+
+    const cache=
+
+    localStorage.getItem("feed_cache");
+
+    if(cache){
+
+        try{
+
+            allArticles=
+
+            JSON.parse(cache);
+
+            filteredArticles=[...allArticles];
+
+            resetFeed();
+
+        }
+
+        catch(e){
+
+            console.log(e);
+
+        }
+
+    }
+
+}
+
+
+
+// ==========================================
+// AUTO SAVE
+// ==========================================
+
+setInterval(()=>{
+
+    saveFeedCache();
+
+},10000);
+
+
+
+// ==========================================
+// NETWORK
+// ==========================================
+
+window.addEventListener("offline",()=>{
+
+    alert("Offline Mode");
+
+});
+
+
+
+window.addEventListener("online",()=>{
+
+    fetchArticles();
+
+});
+
+
+
+// ==========================================
+// IMAGE PRELOAD
+// ==========================================
+
+function preloadImages(){
+
+    filteredArticles
+
+    .slice(0,20)
+
+    .forEach(article=>{
+
+        const img=new Image();
+
+        img.src=
+
+        article.image ||
+
+        FALLBACK_IMAGE;
+
+    });
+
+}
+
+
+
+// ==========================================
+// AUTO REFRESH
+// ==========================================
+
+setInterval(()=>{
+
+    fetchArticles();
+
+},300000);
+
+
+
+// ==========================================
+// STARTUP
+// ==========================================
+
+loadFeedCache();
+
+preloadImages();
+
 // ==========================================
 // START
 // ==========================================
