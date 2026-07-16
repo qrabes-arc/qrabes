@@ -245,9 +245,9 @@ color:var(--text);
 
 margin-top:15px;
 
-padding:10px 20px;
+padding:5px 5px;
 
-border-radius:30px;
+border-radius:20px;
 
 background:#d4af37;
 
@@ -464,6 +464,15 @@ font-size:15px;
 }
 
 
+/* BUTTON */
+
+.read-more{
+
+display:block;
+
+margin-top:5px;
+
+}
 
 
 
