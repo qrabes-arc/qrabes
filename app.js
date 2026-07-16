@@ -56,21 +56,15 @@ async function fetchArticles(){
         });
 
 
-        // latest first
+        // RANDOM FEED ORDER
 
-        allArticles.sort((a,b)=>{
+allArticles.sort(()=>{
 
-            return new Date(
-                b.created_at || b.published || 0
-            )
+    return Math.random() - 0.5;
 
-            -
+});
 
-            new Date(
-                a.created_at || a.published || 0
-            );
-
-        });
+        
 
 
         filteredArticles=[...allArticles];
