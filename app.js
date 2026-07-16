@@ -267,8 +267,21 @@ z">
 
 <button>
 
-<svg viewBox="0 0 24 24">
-<path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.8 9.8 0 0 1-4-.8L3 21l1.8-4A8.5 8.5 0 1 1 21 11.5z"/>
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 24 24"
+class="comment-icon">
+
+<path d="
+M21 11.5
+a8.38 8.38 0 0 1-8.5 8.5
+c-1.4 0-2.7-.3-3.9-.9
+L3 21
+l1.9-5.1
+A8.4 8.4 0 1 1 21 11.5
+z">
+</path>
+
 </svg>
 
 </button>
