@@ -267,23 +267,44 @@ z">
 
 <button>
 
-<svg
-xmlns="http://www.w3.org/2000/svg"
-viewBox="0 0 24 24"
-class="comment-icon">
 
-<path d="
-M21 11.5
-a8.38 8.38 0 0 1-8.5 8.5
-c-1.4 0-2.7-.3-3.9-.9
-L3 21
-l1.9-5.1
-A8.4 8.4 0 1 1 21 11.5
-z">
-</path>
+<svg 
+class="comment-icon" 
+viewBox="0 0 24 24" 
+xmlns="http://www.w3.org/2000/svg">
+
+<path 
+d="M20.5 11.5C20.5 15.64 16.69 19 12 19C10.9 19 9.84 18.8 8.88 18.45L4 20L5.45 15.95C4.55 14.65 4 13.1 4 11.5C4 7.36 7.81 4 12.5 4C17.19 4 20.5 7.36 20.5 11.5Z"
+
+fill="none"
+
+stroke="white"
+
+stroke-width="1.8"
+
+stroke-linecap="round"
+
+stroke-linejoin="round"
+
+/>
+
+
+<path
+
+d="M8 11.5H16"
+
+fill="none"
+
+stroke="white"
+
+stroke-width="1.8"
+
+stroke-linecap="round"
+
+/>
+
 
 </svg>
-
 </button>
 
 
