@@ -263,19 +263,21 @@ font-weight:600;
 }
 
 
-
-/* ACTIONS */
-
+/* =========================
+   SOCIAL ACTION BUTTONS
+========================= */
 
 .actions{
 
-display:flex;
+    display:flex;
 
-align-items:center;
+    align-items:center;
 
-gap:20px;
+    gap:16px;
 
-margin-top:18px;
+    margin-top:18px;
+
+    height:36px;
 
 }
 
@@ -283,46 +285,96 @@ margin-top:18px;
 
 .actions button{
 
-width:30px;
+    width:32px;
 
-height:30px;
+    height:32px;
 
-display:flex;
+    padding:0;
 
-align-items:center;
+    display:flex;
 
-justify-content:center;
+    align-items:center;
+
+    justify-content:center;
+
+    background:transparent;
+
+    border:none;
 
 }
+
 
 
 .actions svg{
 
-width:24px;
+    width:23px;
 
-height:24px;
+    height:23px;
 
-fill:none;
+    display:block;
 
-stroke:white;
+    fill:none;
 
-stroke-width:2;
+    stroke:white;
 
-stroke-linecap:round;
+    stroke-width:1.8;
 
-stroke-linejoin:round;
+    stroke-linecap:round;
+
+    stroke-linejoin:round;
+
+    transition:.25s ease;
 
 }
 
 
+
+/* hover */
 
 .actions button:hover svg{
 
-stroke:#d4af37;
+    stroke:#d4af37;
 
-transform:scale(1.1);
+    transform:scale(1.12);
 
 }
+
+
+
+/* mobile */
+
+@media(max-width:700px){
+
+    .actions{
+
+        gap:18px;
+
+        margin-top:16px;
+
+        height:34px;
+
+    }
+
+
+    .actions button{
+
+        width:30px;
+
+        height:30px;
+
+    }
+
+
+    .actions svg{
+
+        width:22px;
+
+        height:22px;
+
+    }
+
+}
+
 
 
 
