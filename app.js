@@ -227,52 +227,59 @@ ${description}
 </p>
 
 
-
 <div class="actions">
 
-<button>❤️</button>
 
-<button>💬</button>
+<button class="like-btn">
 
-<button
-class="share"
-data-url="${article.url || '#'}"
-data-title="${article.title}"
->
-🔗
+<svg viewBox="0 0 24 24">
+<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/>
+</svg>
+
 </button>
 
 
-<button
-class="bookmark"
-data-url="${article.url || ''}"
->
-🔖
+
+<button>
+
+<svg viewBox="0 0 24 24">
+<path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.8 9.8 0 0 1-4-.8L3 21l1.8-4A8.5 8.5 0 1 1 21 11.5z"/>
+</svg>
+
 </button>
 
 
-<button
-class="read-more"
-data-url="${article.url || '#'}"
->
-Read More
+
+<button class="share">
+
+<svg viewBox="0 0 24 24">
+<path d="M18 8l4 4-4 4M22 12H9"/>
+</svg>
+
 </button>
 
+
+
+<button class="bookmark">
+
+<svg viewBox="0 0 24 24">
+<path d="M6 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18l-6-4-6 4z"/>
+</svg>
+
+</button>
 
 
 </div>
 
 
 
-<div class="stats">
+<div class="source">
 
-👁 ${article.views || 0}
-
-&nbsp;&nbsp;
-
-❤️ ${article.likes || 0}
+${article.source || "QRABES"}
 
 </div>
+
+
 
 
 
