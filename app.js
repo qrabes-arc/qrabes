@@ -298,7 +298,238 @@ window.addEventListener("scroll",()=>{
     }
 
 });
+// ==========================================
+// SEARCH
+// ==========================================
 
+const searchBox = document.getElementById("search");
+
+if(searchBox){
+
+    let searchTimeout;
+
+    searchBox.addEventListener("input",()=>{
+
+        clearTimeout(searchTimeout);
+
+        searchTimeout = setTimeout(()=>{
+
+            const value = searchBox.value
+            .trim()
+            .toLowerCase();
+
+            if(value===""){
+
+                filteredArticles=[...allArticles];
+
+            }
+
+            else{
+
+                filteredArticles = allArticles.filter(article=>{
+
+                    return (
+
+                        (article.title || "")
+                        .toLowerCase()
+                        .includes(value)
+
+                        ||
+
+                        (article.description || "")
+                        .toLowerCase()
+                        .includes(value)
+
+                        ||
+
+                        (article.category || "")
+                        .toLowerCase()
+                        .includes(value)
+
+                    );
+
+                });
+
+            }
+
+            resetFeed();
+
+        },300);
+
+    });
+
+}
+
+
+
+// ==========================================
+// CATEGORY FILTER
+// ==========================================
+
+const buttons =
+document.querySelectorAll(".categories button");
+
+buttons.forEach(button=>{
+
+    button.addEventListener("click",()=>{
+
+        buttons.forEach(btn=>{
+
+            btn.classList.remove("active");
+
+        });
+
+        button.classList.add("active");
+
+        const category = button.dataset.category;
+
+        if(category==="All"){
+
+            filteredArticles=[...allArticles];
+
+        }
+
+        else{
+
+            filteredArticles = allArticles.filter(article=>{
+
+                return article.category===category;
+
+            });
+
+        }
+
+        resetFeed();
+
+    });
+
+});
+
+
+
+// ==========================================
+// REMOVE DUPLICATES
+// ==========================================
+
+function removeDuplicates(){
+
+    const map=new Map();
+
+    allArticles.forEach(article=>{
+
+        const key=
+
+        article.id ||
+
+        article.url ||
+
+        article.title;
+
+        if(!map.has(key)){
+
+            map.set(key,article);
+
+        }
+
+    });
+
+    allArticles=[...map.values()];
+
+}
+
+removeDuplicates();
+
+
+
+// ==========================================
+// READ MORE
+// ==========================================
+
+feed.addEventListener("click",(e)=>{
+
+    const button=e.target.closest(".read-more");
+
+    if(!button) return;
+
+    const url=button.dataset.url;
+
+    if(url){
+
+        window.open(url,"_blank");
+
+    }
+
+});
+
+
+
+// ==========================================
+// SHARE
+// ==========================================
+
+feed.addEventListener("click",async(e)=>{
+
+    const share=e.target.closest(".share");
+
+    if(!share) return;
+
+    const url=share.dataset.url;
+
+    const title=share.dataset.title;
+
+    if(navigator.share){
+
+        try{
+
+            await navigator.share({
+
+                title:title,
+
+                url:url
+
+            });
+
+        }
+
+        catch(err){
+
+            console.log(err);
+
+        }
+
+    }
+
+    else{
+
+        navigator.clipboard.writeText(url);
+
+        alert("Link copied");
+
+    }
+
+});
+
+
+
+// ==========================================
+// REFRESH FEED
+// ==========================================
+
+window.addEventListener("focus",()=>{
+
+    if(searchBox){
+
+        if(searchBox.value===""){
+
+            filteredArticles=[...allArticles];
+
+            resetFeed();
+
+        }
+
+    }
+
+});
 
 
 // ==========================================
