@@ -240,3 +240,116 @@ window.location.href="index.html";
 },2000);
 
 });
+/* ===========================================
+   GOOGLE LOGIN (UI)
+=========================================== */
+
+const googleBtn = document.querySelector(".google-btn");
+
+if (googleBtn) {
+
+    googleBtn.addEventListener("click", () => {
+
+        googleBtn.disabled = true;
+
+        googleBtn.innerHTML = `
+        <span class="loader"></span>
+        Connecting Google...
+        `;
+
+        setTimeout(() => {
+
+            googleBtn.disabled = false;
+
+            googleBtn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg"
+            width="22"
+            height="22"
+            viewBox="0 0 48 48">
+            <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3"/>
+            </svg>
+
+            Continue with Google
+            `;
+
+            alert("Firebase Google Login yaha connect hoga.");
+
+        },2000);
+
+    });
+
+}
+
+/* ===========================================
+   APPLE LOGIN (UI)
+=========================================== */
+
+const appleBtn = document.querySelector(".apple-btn");
+
+if(appleBtn){
+
+appleBtn.addEventListener("click",()=>{
+
+alert("Apple Login Firebase ke saath connect hoga.");
+
+});
+
+}
+
+/* ===========================================
+   REMEMBER ME
+=========================================== */
+
+const remember=document.querySelector("input[type='checkbox']");
+
+window.addEventListener("load",()=>{
+
+const savedEmail=localStorage.getItem("qrabes_email");
+
+if(savedEmail){
+
+email.value=savedEmail;
+
+remember.checked=true;
+
+}
+
+});
+
+remember.addEventListener("change",()=>{
+
+if(remember.checked){
+
+localStorage.setItem(
+
+"qrabes_email",
+
+email.value
+
+);
+
+}else{
+
+localStorage.removeItem("qrabes_email");
+
+}
+
+});
+
+/* ===========================================
+   ENTER KEY LOGIN
+=========================================== */
+
+document.addEventListener("keydown",(e)=>{
+
+if(e.key==="Enter"){
+
+form.requestSubmit();
+
+}
+
+});
+
+/* ===========================================
+   END
+=========================================== */
