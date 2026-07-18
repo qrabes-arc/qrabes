@@ -751,3 +751,39 @@ color:#111;
 /* ===========================
    END
 =========================== */
+
+.error-box{
+
+background:#ff3b30;
+
+padding:14px;
+
+border-radius:12px;
+
+margin-bottom:20px;
+
+font-size:14px;
+
+font-weight:500;
+
+animation:fadeUp .3s;
+
+}
+
+.success-box{
+
+background:#22c55e;
+
+padding:14px;
+
+border-radius:12px;
+
+margin-bottom:20px;
+
+font-size:14px;
+
+font-weight:500;
+
+animation:fadeUp .3s;
+
+}
