@@ -503,3 +503,251 @@ transition:.3s;
 opacity:.8;
 
 }
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media (max-width:768px){
+
+.container{
+
+padding:18px;
+
+}
+
+.login-card{
+
+padding:30px 22px;
+
+border-radius:22px;
+
+}
+
+.logo-box h1{
+
+font-size:34px;
+
+letter-spacing:6px;
+
+}
+
+.logo-box p{
+
+font-size:13px;
+
+}
+
+.input-box{
+
+height:54px;
+
+padding:0 15px;
+
+}
+
+.login-btn,
+.google-btn,
+.apple-btn{
+
+height:52px;
+
+font-size:15px;
+
+}
+
+.options{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+gap:12px;
+
+}
+
+}
+
+@media (max-width:480px){
+
+.login-card{
+
+padding:24px 18px;
+
+}
+
+.logo-box h1{
+
+font-size:28px;
+
+letter-spacing:5px;
+
+}
+
+.logo-box p{
+
+font-size:12px;
+
+}
+
+}
+
+
+/* ===========================
+   SCROLLBAR
+=========================== */
+
+::-webkit-scrollbar{
+
+width:8px;
+
+}
+
+::-webkit-scrollbar-track{
+
+background:#090909;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+background:#FFD54F;
+border-radius:20px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+background:#ffca28;
+
+}
+
+
+/* ===========================
+   ANIMATION
+=========================== */
+
+@keyframes fadeUp{
+
+0%{
+
+opacity:0;
+
+transform:translateY(40px);
+
+}
+
+100%{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+.login-card{
+
+animation:fadeUp .8s ease;
+
+}
+
+
+/* ===========================
+   GLOW
+=========================== */
+
+.login-card::before{
+
+content:"";
+
+position:absolute;
+
+width:220px;
+
+height:220px;
+
+background:rgba(255,213,79,.08);
+
+filter:blur(80px);
+
+top:-80px;
+
+right:-80px;
+
+border-radius:50%;
+
+pointer-events:none;
+
+}
+
+.login-card{
+
+position:relative;
+
+overflow:hidden;
+
+}
+
+
+/* ===========================
+   LOADING BUTTON
+=========================== */
+
+.login-btn.loading{
+
+pointer-events:none;
+
+opacity:.85;
+
+}
+
+.login-btn.loading::after{
+
+content:"";
+
+width:18px;
+
+height:18px;
+
+margin-left:12px;
+
+border:2px solid #111;
+
+border-top-color:transparent;
+
+border-radius:50%;
+
+display:inline-block;
+
+animation:spin .8s linear infinite;
+
+}
+
+@keyframes spin{
+
+100%{
+
+transform:rotate(360deg);
+
+}
+
+}
+
+
+/* ===========================
+   SELECTION
+=========================== */
+
+::selection{
+
+background:#FFD54F;
+
+color:#111;
+
+}
+
+
+/* ===========================
+   END
+=========================== */
