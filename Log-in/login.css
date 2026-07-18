@@ -787,3 +787,20 @@ font-weight:500;
 animation:fadeUp .3s;
 
 }
+.loader{
+
+width:18px;
+height:18px;
+
+border:2px solid rgba(255,255,255,.4);
+border-top:2px solid white;
+
+border-radius:50%;
+
+display:inline-block;
+
+animation:spin .8s linear infinite;
+
+margin-right:10px;
+
+}
