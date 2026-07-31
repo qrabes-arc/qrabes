@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>QRABES API Test</h2>
+
+<button onclick="sendPost()">Send Test Post</button>
+
+<script>
+
+async function sendPost(){
+
+const res = await fetch("/api/publish", {
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+image:"https://images.unsplash.com/photo-1525507119028-ed4c629a60a3",
+caption:"First QRABES test post",
+username:"shashank"
+})
+});
+
+const data = await res.json();
+
+console.log(data);
+
+alert(JSON.stringify(data));
+
+}
+
+</script>
+
+</body>
+</html>
