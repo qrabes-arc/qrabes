@@ -1,61 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>QRABES CMS</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+rel="stylesheet">
+
 <style>
 
+*{
+
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+
+}
+
 body{
-background:#0b0b0b;
-font-family:Inter,sans-serif;
+
+background:#080808;
 color:white;
+
 }
 
 .gold{
+
 color:#D4AF37;
-}
 
-.input{
-width:100%;
-padding:14px;
-background:#111;
-border:1px solid #333;
-border-radius:12px;
-outline:none;
-color:white;
-margin-top:8px;
-margin-bottom:20px;
-}
-
-.input:focus{
-border-color:#D4AF37;
 }
 
 .card{
+
 background:#111;
-border:1px solid #222;
+
+border:1px solid #262626;
+
 border-radius:18px;
-padding:30px;
+
+padding:28px;
+
+}
+
+.input{
+
+width:100%;
+
+padding:14px 16px;
+
+background:#181818;
+
+border:1px solid #333;
+
+border-radius:12px;
+
+outline:none;
+
+color:white;
+
+margin-top:8px;
+
+margin-bottom:22px;
+
+}
+
+.input:focus{
+
+border-color:#D4AF37;
+
 }
 
 .btn{
-background:#D4AF37;
-color:black;
-padding:14px;
+
 width:100%;
-font-weight:bold;
+
+padding:16px;
+
+background:#D4AF37;
+
+color:black;
+
+font-weight:700;
+
 border-radius:12px;
+
 transition:.3s;
+
 }
 
 .btn:hover{
+
 opacity:.9;
+
+}
+
+.preview{
+
+width:100%;
+
+max-height:420px;
+
+object-fit:cover;
+
+border-radius:14px;
+
+margin-top:18px;
+
+display:none;
+
+border:1px solid #333;
+
 }
 
 </style>
@@ -64,49 +134,65 @@ opacity:.9;
 
 <body>
 
-<div class="max-w-5xl mx-auto p-8">
+<div class="max-w-5xl mx-auto px-6 py-10">
 
 <h1 class="text-5xl font-bold gold">
+
 QRABES CMS
+
 </h1>
 
 <p class="text-gray-400 mt-2 mb-10">
+
 Luxury Magazine Dashboard
+
 </p>
 
 <div class="card">
 
-<h2 class="text-2xl font-semibold mb-6">
+<h2 class="text-2xl font-semibold mb-8">
+
 Create New Post
+
 </h2>
 <!-- Cover Image -->
 
-<label class="block text-sm text-gray-300">
-Cover Image *
+<label class="block text-sm font-medium text-gray-300">
+
+Cover Image <span class="text-red-500">*</span>
+
 </label>
 
 <input
-type="text"
+type="file"
 id="image"
-class="input"
-placeholder="https://example.com/image.jpg">
+accept="image/*"
+class="input">
+
+<img
+id="preview"
+class="preview">
 
 <!-- Title -->
 
-<label class="block text-sm text-gray-300">
-Title *
+<label class="block text-sm font-medium text-gray-300 mt-6">
+
+Title <span class="text-red-500">*</span>
+
 </label>
 
 <input
 type="text"
 id="title"
 class="input"
-placeholder="Enter post title">
+placeholder="Enter luxury article title">
 
 <!-- Description -->
 
-<label class="block text-sm text-gray-300">
-Description *
+<label class="block text-sm font-medium text-gray-300">
+
+Description <span class="text-red-500">*</span>
+
 </label>
 
 <textarea
@@ -114,11 +200,12 @@ id="description"
 rows="8"
 class="input"
 placeholder="Write your article description..."></textarea>
-
 <!-- Category -->
 
-<label class="block text-sm text-gray-300">
-Category (Optional)
+<label class="block text-sm font-medium text-gray-300">
+
+Category <span class="text-gray-500">(Optional)</span>
+
 </label>
 
 <select
@@ -137,18 +224,20 @@ class="input">
 
 <option>Travel</option>
 
-<option>Cars</option>
+<option>Lifestyle</option>
 
 <option>Watches</option>
 
-<option>Lifestyle</option>
+<option>Cars</option>
 
 </select>
 
 <!-- Author -->
 
-<label class="block text-sm text-gray-300">
-Author (Optional)
+<label class="block text-sm font-medium text-gray-300">
+
+Author <span class="text-gray-500">(Optional)</span>
+
 </label>
 
 <input
@@ -159,8 +248,10 @@ placeholder="QRABES Editorial">
 
 <!-- Tags -->
 
-<label class="block text-sm text-gray-300">
-Tags (Optional)
+<label class="block text-sm font-medium text-gray-300">
+
+Tags <span class="text-gray-500">(Optional)</span>
+
 </label>
 
 <input
@@ -172,69 +263,111 @@ placeholder="luxury, fashion, gucci">
 
 <div class="flex items-center justify-between mb-6">
 
-    <div>
-        <h3 class="font-semibold text-white">
-            ⭐ Featured
-        </h3>
+<div>
 
-        <p class="text-sm text-gray-400">
-            Show this post in featured section.
-        </p>
-    </div>
+<h3 class="font-semibold text-white">
 
-    <label class="inline-flex items-center cursor-pointer">
-        <input
-            type="checkbox"
-            id="featured"
-            class="w-5 h-5 accent-yellow-500">
-    </label>
+⭐ Featured
+
+</h3>
+
+<p class="text-sm text-gray-400">
+
+Show this post in Featured section
+
+</p>
+
+</div>
+
+<label class="relative inline-flex items-center cursor-pointer">
+
+<input
+type="checkbox"
+id="featured"
+class="sr-only peer">
+
+<div
+class="w-12 h-7 bg-gray-700 rounded-full peer peer-checked:bg-yellow-500 transition">
+
+</div>
+
+<div
+class="absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition peer-checked:translate-x-5">
+
+</div>
+
+</label>
 
 </div>
 
 <!-- Trending -->
 
-<div class="flex items-center justify-between mb-6">
+<div class="flex items-center justify-between mb-8">
 
-    <div>
-        <h3 class="font-semibold text-white">
-            🔥 Trending
-        </h3>
+<div>
 
-        <p class="text-sm text-gray-400">
-            Mark this post as trending.
-        </p>
-    </div>
+<h3 class="font-semibold text-white">
 
-    <label class="inline-flex items-center cursor-pointer">
-        <input
-            type="checkbox"
-            id="trending"
-            class="w-5 h-5 accent-yellow-500">
-    </label>
+🔥 Trending
+
+</h3>
+
+<p class="text-sm text-gray-400">
+
+Mark this post as Trending
+
+</p>
+
+</div>
+
+<label class="relative inline-flex items-center cursor-pointer">
+
+<input
+type="checkbox"
+id="trending"
+class="sr-only peer">
+
+<div
+class="w-12 h-7 bg-gray-700 rounded-full peer peer-checked:bg-yellow-500 transition">
+
+</div>
+
+<div
+class="absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition peer-checked:translate-x-5">
+
+</div>
+
+</label>
 
 </div>
 
 <!-- Status -->
 
-<label class="block text-sm text-gray-300 mb-2">
+<label class="block text-sm font-medium text-gray-300">
+
 Status
+
 </label>
 
 <select
 id="status"
 class="input">
 
-    <option value="publish">
-        Publish
-    </option>
+<option value="publish">
 
-    <option value="draft">
-        Draft
-    </option>
+Publish
+
+</option>
+
+<option value="draft">
+
+Draft
+
+</option>
 
 </select>
 
-<!-- Publish Button -->
+<!-- Publish -->
 
 <button
 id="publishBtn"
@@ -243,29 +376,51 @@ class="btn">
 🚀 Publish Post
 
 </button>
+
+<p
+id="message"
+class="text-center text-green-400 mt-5 hidden">
+
+Post Published Successfully
+
+</p>
 <!-- Divider -->
 
 <div class="border-t border-gray-800 my-10"></div>
 
 <!-- Recent Posts -->
 
-<h2 class="text-2xl font-bold gold mb-6">
+<h2 class="text-3xl font-bold gold mb-6">
+
 Recent Posts
+
 </h2>
 
 <div
 id="postsContainer"
-class="space-y-4">
+class="space-y-5">
 
-<div class="bg-[#181818] border border-gray-800 rounded-xl p-5">
+<div class="bg-[#181818] border border-gray-700 rounded-2xl p-5">
+
+<div class="flex items-center justify-between">
+
+<div>
 
 <h3 class="text-lg font-semibold">
-No posts available
+
+No Posts Yet
+
 </h3>
 
 <p class="text-gray-400 mt-2">
-Your published posts will appear here.
+
+Published posts will appear here.
+
 </p>
+
+</div>
+
+</div>
 
 </div>
 
