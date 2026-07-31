@@ -1,92 +1,174 @@
 export default async function handler(req, res) {
 
-  if (req.method !== "POST") {
-    return res.status(405).json({
-      error: "Only POST allowed"
-    });
-  }
-
-  try {
-
-    const { image, caption, username } = req.body;
-
-    if (!image || !caption) {
-      return res.status(400).json({
-        error: "Image and caption required"
-      });
+    // Only POST
+    if (req.method !== "POST") {
+        return res.status(405).json({
+            error: "Only POST allowed"
+        });
     }
 
-    const token = process.env.GITHUB_TOKEN;
+    try {
 
-    const owner = "qrabes-arc";
-    const repo = "qrabes";
-    const path = "public/user_posts.json";
+        // Data from frontend
+        const {
+            title,
+            description,
+            image,
+            category,
+            author,
+            tags,
+            featured,
+            trending,
+            status
+        } = req.body;
 
-    // GitHub se current JSON lena
-    const fileResponse = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/vnd.github+json"
+        // Validation
+        if (!title || !description || !image) {
+            return res.status(400).json({
+                error: "Title, Description and Image are required."
+            });
         }
-      }
-    );
 
-    const fileData = await fileResponse.json();
+        const token = process.env.GITHUB_TOKEN;
 
-    const content = Buffer.from(
-      fileData.content,
-      "base64"
-    ).toString("utf-8");
+        if (!token) {
+            return res.status(500).json({
+                error: "GitHub Token Missing"
+            });
+        }
 
-    const posts = JSON.parse(content);
+        const owner = "qrabes-arc";
+        const repo = "qrabes";
+        const path = "public/user_posts.json";
 
-    // Naya post add
-    posts.push({
-      id: Date.now(),
-      image,
-      caption,
-      username: username || "anonymous",
-      created_at: new Date().toISOString()
-    });
+        // Read existing JSON from GitHub
 
+        const fileResponse = await fetch(
+            `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: "application/vnd.github+json"
+                }
+            }
+        );
 
-    // GitHub me update
-    const updateResponse = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
-      {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/vnd.github+json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          message: "Add new user post",
-          content: Buffer.from(
-            JSON.stringify(posts, null, 2)
-          ).toString("base64"),
-          sha: fileData.sha
-        })
-      }
-    );
+        if (!fileResponse.ok) {
 
+            const err = await fileResponse.text();
 
-    const result = await updateResponse.json();
+            return res.status(500).json({
+                error: err
+            });
 
-    return res.status(200).json({
-      success: true,
-      result
-    });
+        }
 
+        const fileData = await fileResponse.json();
 
-  } catch (error) {
+        const content = Buffer.from(
+            fileData.content,
+            "base64"
+        ).toString("utf8");
 
-    return res.status(500).json({
-      error: error.message
-    });
+        let posts = [];
 
-  }
+        try {
+
+            posts = JSON.parse(content);
+
+        } catch {
+
+            posts = [];
+
+        }
+              // New Post
+        posts.unshift({
+
+            id: Date.now(),
+
+            title,
+            description,
+            image,
+
+            category: category || "",
+
+            author: author || "QRABES",
+
+            tags: tags || [],
+
+            featured: featured || false,
+
+            trending: trending || false,
+
+            status: status || "publish",
+
+            likes: 0,
+            comments: 0,
+            shares: 0,
+            views: 0,
+
+            published_at: new Date().toISOString()
+
+        });
+
+        // Upload updated JSON to GitHub
+
+        const updateResponse = await fetch(
+            `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
+            {
+                method: "PUT",
+
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: "application/vnd.github+json",
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    message: `Publish: ${title}`,
+
+                    content: Buffer
+                        .from(
+                            JSON.stringify(posts, null, 2)
+                        )
+                        .toString("base64"),
+
+                    sha: fileData.sha
+
+                })
+
+            }
+        );
+
+        const result = await updateResponse.json();
+
+        if (!updateResponse.ok) {
+
+            return res.status(500).json({
+                error: result
+            });
+
+        }
+
+        return res.status(200).json({
+
+            success: true,
+
+            message: "Post Published Successfully",
+
+            post: posts[0]
+
+        });
+
+    } catch (error) {
+
+        return res.status(500).json({
+
+            error: error.message
+
+        });
+
+    }
 
 }
