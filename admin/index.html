@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>QRABES CMS</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+
+body{
+background:#0b0b0b;
+font-family:Inter,sans-serif;
+color:white;
+}
+
+.gold{
+color:#D4AF37;
+}
+
+.input{
+width:100%;
+padding:14px;
+background:#111;
+border:1px solid #333;
+border-radius:12px;
+outline:none;
+color:white;
+margin-top:8px;
+margin-bottom:20px;
+}
+
+.input:focus{
+border-color:#D4AF37;
+}
+
+.card{
+background:#111;
+border:1px solid #222;
+border-radius:18px;
+padding:30px;
+}
+
+.btn{
+background:#D4AF37;
+color:black;
+padding:14px;
+width:100%;
+font-weight:bold;
+border-radius:12px;
+transition:.3s;
+}
+
+.btn:hover{
+opacity:.9;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="max-w-5xl mx-auto p-8">
+
+<h1 class="text-5xl font-bold gold">
+QRABES CMS
+</h1>
+
+<p class="text-gray-400 mt-2 mb-10">
+Luxury Magazine Dashboard
+</p>
+
+<div class="card">
+
+<h2 class="text-2xl font-semibold mb-6">
+Create New Post
+</h2>
+<!-- Cover Image -->
+
+<label class="block text-sm text-gray-300">
+Cover Image *
+</label>
+
+<input
+type="text"
+id="image"
+class="input"
+placeholder="https://example.com/image.jpg">
+
+<!-- Title -->
+
+<label class="block text-sm text-gray-300">
+Title *
+</label>
+
+<input
+type="text"
+id="title"
+class="input"
+placeholder="Enter post title">
+
+<!-- Description -->
+
+<label class="block text-sm text-gray-300">
+Description *
+</label>
+
+<textarea
+id="description"
+rows="8"
+class="input"
+placeholder="Write your article description..."></textarea>
+
+<!-- Category -->
+
+<label class="block text-sm text-gray-300">
+Category (Optional)
+</label>
+
+<select
+id="category"
+class="input">
+
+<option value="">Select Category</option>
+
+<option>Fashion</option>
+
+<option>Luxury</option>
+
+<option>Celebrity</option>
+
+<option>Beauty</option>
+
+<option>Travel</option>
+
+<option>Cars</option>
+
+<option>Watches</option>
+
+<option>Lifestyle</option>
+
+</select>
+
+<!-- Author -->
+
+<label class="block text-sm text-gray-300">
+Author (Optional)
+</label>
+
+<input
+type="text"
+id="author"
+class="input"
+placeholder="QRABES Editorial">
+
+<!-- Tags -->
+
+<label class="block text-sm text-gray-300">
+Tags (Optional)
+</label>
+
+<input
+type="text"
+id="tags"
+class="input"
+placeholder="luxury, fashion, gucci">
+<!-- Featured -->
+
+<div class="flex items-center justify-between mb-6">
+
+    <div>
+        <h3 class="font-semibold text-white">
+            ⭐ Featured
+        </h3>
+
+        <p class="text-sm text-gray-400">
+            Show this post in featured section.
+        </p>
+    </div>
+
+    <label class="inline-flex items-center cursor-pointer">
+        <input
+            type="checkbox"
+            id="featured"
+            class="w-5 h-5 accent-yellow-500">
+    </label>
+
+</div>
+
+<!-- Trending -->
+
+<div class="flex items-center justify-between mb-6">
+
+    <div>
+        <h3 class="font-semibold text-white">
+            🔥 Trending
+        </h3>
+
+        <p class="text-sm text-gray-400">
+            Mark this post as trending.
+        </p>
+    </div>
+
+    <label class="inline-flex items-center cursor-pointer">
+        <input
+            type="checkbox"
+            id="trending"
+            class="w-5 h-5 accent-yellow-500">
+    </label>
+
+</div>
+
+<!-- Status -->
+
+<label class="block text-sm text-gray-300 mb-2">
+Status
+</label>
+
+<select
+id="status"
+class="input">
+
+    <option value="publish">
+        Publish
+    </option>
+
+    <option value="draft">
+        Draft
+    </option>
+
+</select>
+
+<!-- Publish Button -->
+
+<button
+id="publishBtn"
+class="btn">
+
+🚀 Publish Post
+
+</button>
+<!-- Divider -->
+
+<div class="border-t border-gray-800 my-10"></div>
+
+<!-- Recent Posts -->
+
+<h2 class="text-2xl font-bold gold mb-6">
+Recent Posts
+</h2>
+
+<div
+id="postsContainer"
+class="space-y-4">
+
+<div class="bg-[#181818] border border-gray-800 rounded-xl p-5">
+
+<h3 class="text-lg font-semibold">
+No posts available
+</h3>
+
+<p class="text-gray-400 mt-2">
+Your published posts will appear here.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
