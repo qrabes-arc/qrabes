@@ -182,3 +182,143 @@ try{
 
 const imageUrl =
 await uploadImage(file);
+// ===============================
+// Publish Button
+// ===============================
+
+const publishBtn = document.getElementById("publishBtn");
+const message = document.getElementById("message");
+
+publishBtn.addEventListener("click", async () => {
+
+    const file = imageInput.files[0];
+
+    const title = document.getElementById("title").value.trim();
+    const description = document.getElementById("description").value.trim();
+    const category = document.getElementById("category").value;
+    const author = document.getElementById("author").value.trim();
+    const tags = document.getElementById("tags").value
+        .split(",")
+        .map(tag => tag.trim())
+        .filter(tag => tag !== "");
+
+    const featured = document.getElementById("featured").checked;
+    const trending = document.getElementById("trending").checked;
+    const status = document.getElementById("status").value;
+
+    // Validation
+
+    if (!file) {
+        alert("Please select an image.");
+        return;
+    }
+
+    if (!title) {
+        alert("Please enter title.");
+        return;
+    }
+
+    if (!description) {
+        alert("Please enter description.");
+        return;
+    }
+
+    publishBtn.disabled = true;
+    publishBtn.innerText = "Uploading Image...";
+
+    // Upload image to Supabase
+
+    const upload = await uploadImage(file);
+
+    if (!upload) {
+
+        publishBtn.disabled = false;
+        publishBtn.innerText = "🚀 Publish Post";
+        return;
+
+    }
+
+    publishBtn.innerText = "Publishing...";
+
+    // Post Object
+
+    const post = {
+
+        title,
+        description,
+        image: upload.imageUrl,
+        category,
+        author,
+        tags,
+        featured,
+        trending,
+        status,
+
+        likes: 0,
+        comments: 0,
+        shares: 0,
+        views: 0,
+
+        published_at: new Date().toISOString()
+
+    };
+
+    try {
+
+        const response = await fetch("/api/publish", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(post)
+
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+
+            throw new Error(result.error || "Publish Failed");
+
+        }
+
+        message.classList.remove("hidden");
+        message.innerText = "✅ Post Published Successfully";
+
+        setTimeout(() => {
+
+            message.classList.add("hidden");
+
+        }, 3000);
+
+        // Reset Form
+
+        document.getElementById("title").value = "";
+        document.getElementById("description").value = "";
+        document.getElementById("category").value = "";
+        document.getElementById("author").value = "";
+        document.getElementById("tags").value = "";
+
+        document.getElementById("featured").checked = false;
+        document.getElementById("trending").checked = false;
+        document.getElementById("status").value = "publish";
+
+        imageInput.value = "";
+
+        preview.src = "";
+        preview.style.display = "none";
+
+    } catch (err) {
+
+        alert(err.message);
+
+    }
+
+    publishBtn.disabled = false;
+    publishBtn.innerText = "🚀 Publish Post";
+
+});
+
