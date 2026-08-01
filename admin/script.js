@@ -1,363 +1,601 @@
 // =====================================
 // QRABES CMS
-// Part 1
+// FINAL admin/script.js
 // =====================================
 
-// ---------------------------
-// Supabase Config
-// ---------------------------
+
+// =====================================
+// SUPABASE CONFIG
+// =====================================
 
 const SUPABASE_URL =
-"https://bfcjuwbeyrdrgfoejaaw.supabase.co";
+    "https://bfcjuwbeyrdrgfoejaaw.supabase.co";
 
 const SUPABASE_ANON_KEY =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJmY2p1d2JleXJkcmdmb2VqYWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyMTYzMTksImV4cCI6MjEwMDc5MjMxOX0.oTHDKWrHJWQf-OrNsWxnL4U8ouZa16bPmCWeNL_L_CE";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJmY2p1d2JleXJkcmdmb2VqYWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyMTYzMTksImV4cCI6MjEwMDc5MjMxOX0.oTHDKWrHJWQf-OrNsWxnL4U8ouZa16bPmCWeNL_L_CE";
 
-// ---------------------------
-// Client
-// ---------------------------
+
+// =====================================
+// SUPABASE CLIENT
+// =====================================
 
 const supabase =
-window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_ANON_KEY
-);
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+    );
 
-// ---------------------------
-// Elements
-// ---------------------------
+
+// =====================================
+// ELEMENTS
+// =====================================
 
 const imageInput =
-document.getElementById("image");
+    document.getElementById("image");
 
 const preview =
-document.getElementById("preview");
+    document.getElementById("preview");
 
 const publishBtn =
-document.getElementById("publishBtn");
+    document.getElementById("publishBtn");
 
 const message =
-document.getElementById("message");
+    document.getElementById("message");
 
-// ---------------------------
-// Preview
-// ---------------------------
+const postsContainer =
+    document.getElementById("postsContainer");
 
-imageInput.addEventListener("change", () => {
 
-const file = imageInput.files[0];
+// =====================================
+// IMAGE PREVIEW
+// =====================================
 
-if(!file){
+if (imageInput) {
 
-preview.style.display="none";
+    imageInput.addEventListener("change", () => {
 
-return;
+        const file =
+            imageInput.files[0];
 
-}
+        if (!file) {
 
-preview.src =
-URL.createObjectURL(file);
+            preview.style.display = "none";
+            preview.src = "";
 
-preview.style.display="block";
+            return;
 
-});
+        }
 
-// ---------------------------
-// Upload Image
-// ---------------------------
+        preview.src =
+            URL.createObjectURL(file);
 
-async function uploadImage(file){
+        preview.style.display =
+            "block";
 
-const extension =
-file.name.split(".").pop();
-
-const filename =
-"post_" +
-Date.now() +
-"." +
-extension;
-
-const { error } =
-await supabase.storage
-.from("posts")
-.upload(filename,file);
-
-if(error){
-
-throw new Error(error.message);
+    });
 
 }
 
-const { data } =
-supabase.storage
-.from("posts")
-.getPublicUrl(filename);
 
-return data.publicUrl;
+// =====================================
+// UPLOAD IMAGE TO SUPABASE
+// =====================================
 
-}
-
-// ---------------------------
-// Publish
-// ---------------------------
-
-publishBtn.addEventListener(
-"click",
-publishPost
-);
-
-async function publishPost(){
-
-const file =
-imageInput.files[0];
-
-const title =
-document.getElementById("title")
-.value.trim();
-
-const description =
-document.getElementById("description")
-.value.trim();
-
-const category =
-document.getElementById("category")
-.value;
-
-const author =
-document.getElementById("author")
-.value.trim();
-
-const tags =
-document.getElementById("tags")
-.value
-.split(",")
-.map(tag=>tag.trim())
-.filter(Boolean);
-
-const featured =
-document.getElementById("featured")
-.checked;
-
-const trending =
-document.getElementById("trending")
-.checked;
-
-const status =
-document.getElementById("status")
-.value;
-
-// Validation
-
-if(!file){
-
-alert("Select image");
-
-return;
-
-}
-
-if(!title){
-
-alert("Enter title");
-
-return;
-
-}
-
-if(!description){
-
-alert("Enter description");
-
-return;
-
-}
-
-publishBtn.disabled=true;
-
-publishBtn.innerText="Uploading...";
-
-try{
-
-// upload image
-
-const imageUrl =
-await uploadImage(file);
-// ===============================
-// Publish Button
-// ===============================
-
-const publishBtn = document.getElementById("publishBtn");
-const message = document.getElementById("message");
-
-publishBtn.addEventListener("click", async () => {
-
-    const file = imageInput.files[0];
-
-    const title = document.getElementById("title").value.trim();
-    const description = document.getElementById("description").value.trim();
-    const category = document.getElementById("category").value;
-    const author = document.getElementById("author").value.trim();
-    const tags = document.getElementById("tags").value
-        .split(",")
-        .map(tag => tag.trim())
-        .filter(tag => tag !== "");
-
-    const featured = document.getElementById("featured").checked;
-    const trending = document.getElementById("trending").checked;
-    const status = document.getElementById("status").value;
-
-    // Validation
+async function uploadImage(file) {
 
     if (!file) {
-        alert("Please select an image.");
-        return;
+
+        throw new Error(
+            "No image selected."
+        );
+
     }
+
+
+    // File extension
+
+    const extension =
+        file.name
+            .split(".")
+            .pop()
+            .toLowerCase();
+
+
+    // Unique filename
+
+    const filename =
+        "post_" +
+        Date.now() +
+        "_" +
+        Math.random()
+            .toString(36)
+            .substring(2, 8) +
+        "." +
+        extension;
+
+
+    // Upload to Supabase Storage
+
+    const { error } =
+        await supabase
+            .storage
+            .from("posts")
+            .upload(
+                filename,
+                file,
+                {
+                    cacheControl: "3600",
+                    upsert: false
+                }
+            );
+
+
+    if (error) {
+
+        throw new Error(
+            "Image upload failed: " +
+            error.message
+        );
+
+    }
+
+
+    // Get public URL
+
+    const { data } =
+        supabase
+            .storage
+            .from("posts")
+            .getPublicUrl(filename);
+
+
+    if (!data || !data.publicUrl) {
+
+        throw new Error(
+            "Could not create image URL."
+        );
+
+    }
+
+
+    // IMPORTANT:
+    // Direct URL return hoga
+
+    return data.publicUrl;
+
+}
+
+
+// =====================================
+// PUBLISH BUTTON
+// =====================================
+
+if (publishBtn) {
+
+    publishBtn.addEventListener(
+        "click",
+        publishPost
+    );
+
+}
+
+
+// =====================================
+// PUBLISH POST
+// =====================================
+
+async function publishPost() {
+
+    const file =
+        imageInput.files[0];
+
+
+    const title =
+        document
+            .getElementById("title")
+            .value
+            .trim();
+
+
+    const description =
+        document
+            .getElementById("description")
+            .value
+            .trim();
+
+
+    const category =
+        document
+            .getElementById("category")
+            .value;
+
+
+    const author =
+        document
+            .getElementById("author")
+            .value
+            .trim();
+
+
+    const tags =
+        document
+            .getElementById("tags")
+            .value
+            .split(",")
+            .map(tag => tag.trim())
+            .filter(Boolean);
+
+
+    const featured =
+        document
+            .getElementById("featured")
+            .checked;
+
+
+    const trending =
+        document
+            .getElementById("trending")
+            .checked;
+
+
+    const status =
+        document
+            .getElementById("status")
+            .value;
+
+
+    // =================================
+    // VALIDATION
+    // =================================
+
+    if (!file) {
+
+        alert(
+            "Please select a cover image."
+        );
+
+        return;
+
+    }
+
 
     if (!title) {
-        alert("Please enter title.");
+
+        alert(
+            "Please enter a title."
+        );
+
         return;
+
     }
+
 
     if (!description) {
-        alert("Please enter description.");
+
+        alert(
+            "Please enter a description."
+        );
+
         return;
+
     }
+
+
+    // =================================
+    // DISABLE BUTTON
+    // =================================
 
     publishBtn.disabled = true;
-    publishBtn.innerText = "Uploading Image...";
 
-    // Upload image to Supabase
+    publishBtn.innerText =
+        "Uploading Image...";
 
-    const upload = await uploadImage(file);
-
-    if (!upload) {
-
-        publishBtn.disabled = false;
-        publishBtn.innerText = "🚀 Publish Post";
-        return;
-
-    }
-
-    publishBtn.innerText = "Publishing...";
-
-    // Post Object
-
-    const post = {
-
-        title,
-        description,
-        image: upload.imageUrl,
-        category,
-        author,
-        tags,
-        featured,
-        trending,
-        status,
-
-        likes: 0,
-        comments: 0,
-        shares: 0,
-        views: 0,
-
-        published_at: new Date().toISOString()
-
-    };
 
     try {
 
-        const response = await fetch("/api/publish", {
 
-            method: "POST",
+        // =================================
+        // 1. UPLOAD IMAGE
+        // =================================
 
-            headers: {
-                "Content-Type": "application/json"
-            },
+        const imageUrl =
+            await uploadImage(file);
 
-            body: JSON.stringify(post)
 
-        });
+        console.log(
+            "Supabase Image URL:",
+            imageUrl
+        );
 
-        const result = await response.json();
 
-if (!response.ok) {
+        // =================================
+        // 2. CREATE POST OBJECT
+        // =================================
 
-    throw new Error(result.error || "Publish Failed");
+        const post = {
 
-}
+            title: title,
 
-// Success message
+            description: description,
 
-message.classList.remove("hidden");
+            image: imageUrl,
 
-message.innerText = "✅ Post Published Successfully";
+            category: category || "",
 
-// Refresh Recent Posts
+            author:
+                author || "QRABES",
 
-await loadRecentPosts();
+            tags: tags,
 
-setTimeout(() => {
+            featured:
+                featured,
 
-    message.classList.add("hidden");
+            trending:
+                trending,
 
-}, 3000);
+            status:
+                status || "publish",
 
-// Reset Form
+            likes: 0,
 
-        document.getElementById("title").value = "";
-        document.getElementById("description").value = "";
-        document.getElementById("category").value = "";
-        document.getElementById("author").value = "";
-        document.getElementById("tags").value = "";
+            comments: 0,
 
-        document.getElementById("featured").checked = false;
-        document.getElementById("trending").checked = false;
-        document.getElementById("status").value = "publish";
+            shares: 0,
+
+            views: 0,
+
+            published_at:
+                new Date().toISOString()
+
+        };
+
+
+        console.log(
+            "Post Data:",
+            post
+        );
+
+
+        // =================================
+        // 3. SEND TO VERCEL API
+        // =================================
+
+        publishBtn.innerText =
+            "Publishing...";
+
+
+        const response =
+            await fetch(
+                "/api/publish",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(post)
+
+                }
+            );
+
+
+        // Try to read JSON response
+
+        let result = {};
+
+        try {
+
+            result =
+                await response.json();
+
+        } catch {
+
+            result = {};
+
+        }
+
+
+        // =================================
+        // API ERROR
+        // =================================
+
+        if (!response.ok) {
+
+            let errorMessage =
+                "Publish failed.";
+
+            if (
+                typeof result.error ===
+                "string"
+            ) {
+
+                errorMessage =
+                    result.error;
+
+            } else if (
+                result.error
+            ) {
+
+                errorMessage =
+                    JSON.stringify(
+                        result.error
+                    );
+
+            }
+
+
+            throw new Error(
+                errorMessage
+            );
+
+        }
+
+
+        // =================================
+        // SUCCESS
+        // =================================
+
+        console.log(
+            "Publish Result:",
+            result
+        );
+
+
+        message.classList.remove(
+            "hidden"
+        );
+
+        message.innerText =
+            "✅ Post Published Successfully";
+
+
+        // =================================
+        // RESET FORM
+        // =================================
+
+        document
+            .getElementById("title")
+            .value = "";
+
+
+        document
+            .getElementById("description")
+            .value = "";
+
+
+        document
+            .getElementById("category")
+            .value = "";
+
+
+        document
+            .getElementById("author")
+            .value = "";
+
+
+        document
+            .getElementById("tags")
+            .value = "";
+
+
+        document
+            .getElementById("featured")
+            .checked = false;
+
+
+        document
+            .getElementById("trending")
+            .checked = false;
+
+
+        document
+            .getElementById("status")
+            .value = "publish";
+
 
         imageInput.value = "";
 
+
         preview.src = "";
-        preview.style.display = "none";
 
-    } catch (err) {
+        preview.style.display =
+            "none";
 
-        alert(err.message);
+
+        // =================================
+        // REFRESH POSTS
+        // =================================
+
+        await loadRecentPosts();
+
+
+        // =================================
+        // HIDE SUCCESS MESSAGE
+        // =================================
+
+        setTimeout(() => {
+
+            message.classList.add(
+                "hidden"
+            );
+
+        }, 3000);
+
+
+    } catch (error) {
+
+        console.error(
+            "Publish Error:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Something went wrong."
+        );
+
+
+    } finally {
+
+        publishBtn.disabled =
+            false;
+
+        publishBtn.innerText =
+            "🚀 Publish Post";
 
     }
 
-    publishBtn.disabled = false;
-    publishBtn.innerText = "🚀 Publish Post";
+}
 
-});
 
-// ===============================
-// PART 3
+// =====================================
 // RECENT POSTS
-// ===============================
+// =====================================
 
 async function loadRecentPosts() {
 
-    const postsContainer =
-        document.getElementById("postsContainer");
+    if (!postsContainer) {
+        return;
+    }
 
-    if (!postsContainer) return;
 
-    // Loading state
+    // Loading
 
     postsContainer.innerHTML = `
-        <div class="bg-[#181818] border border-gray-700 rounded-2xl p-5 text-center">
+
+        <div class="bg-[#181818]
+                    border border-gray-700
+                    rounded-2xl
+                    p-5
+                    text-center">
+
             <p class="text-gray-400">
                 Loading posts...
             </p>
+
         </div>
+
     `;
+
 
     try {
 
-        // Add timestamp to prevent old cached JSON
 
-        const response = await fetch(
-            `/user_posts.json?t=${Date.now()}`
-        );
+        // =================================
+        // IMPORTANT
+        // public → data
+        // =================================
+
+        const response =
+            await fetch(
+                `/data/user_posts.json?t=${Date.now()}`
+            );
+
 
         if (!response.ok) {
 
@@ -367,14 +605,27 @@ async function loadRecentPosts() {
 
         }
 
-        const posts = await response.json();
 
-        // No posts
+        const posts =
+            await response.json();
 
-        if (!Array.isArray(posts) || posts.length === 0) {
+
+        // =================================
+        // NO POSTS
+        // =================================
+
+        if (
+            !Array.isArray(posts) ||
+            posts.length === 0
+        ) {
 
             postsContainer.innerHTML = `
-                <div class="bg-[#181818] border border-gray-700 rounded-2xl p-5">
+
+                <div class="bg-[#181818]
+                            border border-gray-700
+                            rounded-2xl
+                            p-5">
+
                     <h3 class="text-lg font-semibold">
                         No Posts Yet
                     </h3>
@@ -382,229 +633,422 @@ async function loadRecentPosts() {
                     <p class="text-gray-400 mt-2">
                         Published posts will appear here.
                     </p>
+
                 </div>
+
             `;
 
             return;
 
         }
 
-        // Clear container
 
-        postsContainer.innerHTML = "";
+        // Clear
 
-        // Show latest first
+        postsContainer.innerHTML =
+            "";
 
-        posts.slice(0, 20).forEach(post => {
 
-            const card =
-                document.createElement("div");
+        // =================================
+        // LATEST 20 POSTS
+        // =================================
 
-            card.className =
-                "bg-[#181818] border border-gray-700 rounded-2xl p-5";
+        posts
+            .slice(0, 20)
+            .forEach(post => {
 
-            // Date
 
-            let formattedDate = "Unknown date";
+                const card =
+                    document.createElement(
+                        "div"
+                    );
 
-            if (post.published_at) {
 
-                const date =
-                    new Date(post.published_at);
+                card.className =
+                    "bg-[#181818] border border-gray-700 rounded-2xl p-5";
 
-                if (!isNaN(date.getTime())) {
 
-                    formattedDate =
-                        date.toLocaleDateString(
-                            "en-IN",
-                            {
-                                day: "numeric",
-                                month: "short",
-                                year: "numeric"
-                            }
+                // =================================
+                // DATE
+                // =================================
+
+                let formattedDate =
+                    "Unknown date";
+
+
+                if (
+                    post.published_at
+                ) {
+
+                    const date =
+                        new Date(
+                            post.published_at
                         );
+
+
+                    if (
+                        !isNaN(
+                            date.getTime()
+                        )
+                    ) {
+
+                        formattedDate =
+                            date.toLocaleDateString(
+                                "en-IN",
+                                {
+                                    day: "numeric",
+                                    month: "short",
+                                    year: "numeric"
+                                }
+                            );
+
+                    }
 
                 }
 
-            }
 
-            // Tags
+                // =================================
+                // TAGS
+                // =================================
 
-            let tagsHTML = "";
-
-            if (
-                Array.isArray(post.tags) &&
-                post.tags.length
-            ) {
-
-                tagsHTML = post.tags
-                    .map(tag => `
-                        <span class="inline-block bg-[#252525] text-gray-300 text-xs px-3 py-1 rounded-full mr-1 mb-1">
-                            #${escapeHTML(tag)}
-                        </span>
-                    `)
-                    .join("");
-
-            }
-
-            // Featured
-
-            const featuredHTML =
-                post.featured
-                    ? `
-                        <span class="text-xs bg-yellow-500 text-black px-2 py-1 rounded-full font-semibold">
-                            ⭐ Featured
-                        </span>
-                    `
-                    : "";
-
-            // Trending
-
-            const trendingHTML =
-                post.trending
-                    ? `
-                        <span class="text-xs bg-red-500 text-white px-2 py-1 rounded-full font-semibold">
-                            🔥 Trending
-                        </span>
-                    `
-                    : "";
-
-            card.innerHTML = `
-
-                <div class="flex flex-col md:flex-row gap-5">
-
-                    <!-- Image -->
-
-                    <div class="w-full md:w-48 h-40 flex-shrink-0">
-
-                        <img
-                            src="${escapeHTML(post.image || "")}"
-                            alt="${escapeHTML(post.title || "Post")}"
-                            class="w-full h-full object-cover rounded-xl border border-gray-700"
-                            loading="lazy"
-                            onerror="this.style.display='none'"
-                        >
-
-                    </div>
+                let tagsHTML =
+                    "";
 
 
-                    <!-- Content -->
+                if (
+                    Array.isArray(
+                        post.tags
+                    ) &&
+                    post.tags.length
+                ) {
 
-                    <div class="flex-1">
+                    tagsHTML =
+                        post.tags
+                            .map(tag => `
 
-                        <div class="flex flex-wrap gap-2 mb-3">
+                                <span
+                                    class="inline-block
+                                           bg-[#252525]
+                                           text-gray-300
+                                           text-xs
+                                           px-3
+                                           py-1
+                                           rounded-full
+                                           mr-1
+                                           mb-1">
 
-                            ${featuredHTML}
+                                    #${escapeHTML(tag)}
 
-                            ${trendingHTML}
+                                </span>
 
-                            ${
-                                post.category
-                                    ? `
-                                        <span class="text-xs bg-[#252525] text-gray-300 px-2 py-1 rounded-full">
-                                            ${escapeHTML(post.category)}
-                                        </span>
-                                    `
-                                    : ""
-                            }
+                            `)
+                            .join("");
+
+                }
+
+
+                // =================================
+                // FEATURED
+                // =================================
+
+                const featuredHTML =
+                    post.featured
+                        ? `
+
+                            <span
+                                class="text-xs
+                                       bg-yellow-500
+                                       text-black
+                                       px-2
+                                       py-1
+                                       rounded-full
+                                       font-semibold">
+
+                                ⭐ Featured
+
+                            </span>
+
+                        `
+                        : "";
+
+
+                // =================================
+                // TRENDING
+                // =================================
+
+                const trendingHTML =
+                    post.trending
+                        ? `
+
+                            <span
+                                class="text-xs
+                                       bg-red-500
+                                       text-white
+                                       px-2
+                                       py-1
+                                       rounded-full
+                                       font-semibold">
+
+                                🔥 Trending
+
+                            </span>
+
+                        `
+                        : "";
+
+
+                // =================================
+                // CARD
+                // =================================
+
+                card.innerHTML = `
+
+                    <div
+                        class="flex
+                               flex-col
+                               md:flex-row
+                               gap-5">
+
+
+                        <!-- IMAGE -->
+
+                        <div
+                            class="w-full
+                                   md:w-48
+                                   h-40
+                                   flex-shrink-0">
+
+                            <img
+                                src="${escapeHTML(post.image || "")}"
+                                alt="${escapeHTML(post.title || "Post")}"
+                                class="w-full
+                                       h-full
+                                       object-cover
+                                       rounded-xl
+                                       border
+                                       border-gray-700"
+                                loading="lazy"
+                                onerror="this.style.display='none'"
+                            >
 
                         </div>
 
 
-                        <h3 class="text-xl font-semibold text-white">
+                        <!-- CONTENT -->
 
-                            ${escapeHTML(
-                                post.title || "Untitled Post"
-                            )}
-
-                        </h3>
+                        <div
+                            class="flex-1">
 
 
-                        <p class="text-gray-400 mt-2 line-clamp-3">
+                            <!-- BADGES -->
 
-                            ${escapeHTML(
-                                post.description || ""
-                            )}
+                            <div
+                                class="flex
+                                       flex-wrap
+                                       gap-2
+                                       mb-3">
 
-                        </p>
+                                ${featuredHTML}
+
+                                ${trendingHTML}
+
+                                ${
+                                    post.category
+                                        ? `
+
+                                            <span
+                                                class="text-xs
+                                                       bg-[#252525]
+                                                       text-gray-300
+                                                       px-2
+                                                       py-1
+                                                       rounded-full">
+
+                                                ${escapeHTML(
+                                                    post.category
+                                                )}
+
+                                            </span>
+
+                                        `
+                                        : ""
+                                }
+
+                            </div>
 
 
-                        <div class="flex flex-wrap gap-3 text-sm text-gray-500 mt-4">
+                            <!-- TITLE -->
 
-                            <span>
-                                👤 ${escapeHTML(
-                                    post.author || "QRABES"
+                            <h3
+                                class="text-xl
+                                       font-semibold
+                                       text-white">
+
+                                ${escapeHTML(
+                                    post.title ||
+                                    "Untitled Post"
                                 )}
-                            </span>
 
-                            <span>
-                                📅 ${formattedDate}
-                            </span>
-
-                            <span>
-                                ❤️ ${Number(post.likes || 0)}
-                            </span>
-
-                            <span>
-                                👁️ ${Number(post.views || 0)}
-                            </span>
-
-                        </div>
+                            </h3>
 
 
-                        <div class="mt-4">
+                            <!-- DESCRIPTION -->
 
-                            ${tagsHTML}
+                            <p
+                                class="text-gray-400
+                                       mt-2
+                                       line-clamp-3">
+
+                                ${escapeHTML(
+                                    post.description ||
+                                    ""
+                                )}
+
+                            </p>
+
+
+                            <!-- META -->
+
+                            <div
+                                class="flex
+                                       flex-wrap
+                                       gap-3
+                                       text-sm
+                                       text-gray-500
+                                       mt-4">
+
+                                <span>
+
+                                    👤
+                                    ${escapeHTML(
+                                        post.author ||
+                                        "QRABES"
+                                    )}
+
+                                </span>
+
+
+                                <span>
+
+                                    📅
+                                    ${formattedDate}
+
+                                </span>
+
+
+                                <span>
+
+                                    ❤️
+                                    ${Number(
+                                        post.likes ||
+                                        0
+                                    )}
+
+                                </span>
+
+
+                                <span>
+
+                                    👁️
+                                    ${Number(
+                                        post.views ||
+                                        0
+                                    )}
+
+                                </span>
+
+                            </div>
+
+
+                            <!-- TAGS -->
+
+                            <div
+                                class="mt-4">
+
+                                ${tagsHTML}
+
+                            </div>
+
 
                         </div>
 
                     </div>
 
-                </div>
+                `;
 
-            `;
 
-            postsContainer.appendChild(card);
+                postsContainer.appendChild(
+                    card
+                );
 
-        });
+            });
+
 
     } catch (error) {
+
 
         console.error(
             "Recent Posts Error:",
             error
         );
 
+
         postsContainer.innerHTML = `
 
-            <div class="bg-[#181818] border border-red-900 rounded-2xl p-5">
+            <div
+                class="bg-[#181818]
+                       border
+                       border-red-900
+                       rounded-2xl
+                       p-5">
 
-                <h3 class="text-lg font-semibold text-red-400">
+
+                <h3
+                    class="text-lg
+                           font-semibold
+                           text-red-400">
 
                     Failed to Load Posts
 
                 </h3>
 
-                <p class="text-gray-400 mt-2">
 
-                    ${escapeHTML(error.message)}
+                <p
+                    class="text-gray-400
+                           mt-2">
+
+                    ${escapeHTML(
+                        error.message
+                    )}
 
                 </p>
 
+
                 <button
                     id="retryPosts"
-                    class="mt-4 px-4 py-2 bg-[#D4AF37] text-black rounded-lg font-semibold">
+                    class="mt-4
+                           px-4
+                           py-2
+                           bg-[#D4AF37]
+                           text-black
+                           rounded-lg
+                           font-semibold">
 
                     Retry
 
                 </button>
 
+
             </div>
 
         `;
 
+
         const retryButton =
-            document.getElementById("retryPosts");
+            document.getElementById(
+                "retryPosts"
+            );
+
 
         if (retryButton) {
 
@@ -620,25 +1064,42 @@ async function loadRecentPosts() {
 }
 
 
-// ===============================
+// =====================================
 // HTML SAFETY
-// ===============================
+// =====================================
 
 function escapeHTML(value) {
 
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    return String(
+        value ?? ""
+    )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
 
 
-// ===============================
+// =====================================
 // LOAD POSTS WHEN ADMIN OPENS
-// ===============================
+// =====================================
 
 document.addEventListener(
     "DOMContentLoaded",
