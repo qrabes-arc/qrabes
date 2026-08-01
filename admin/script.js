@@ -119,7 +119,7 @@ async function uploadImage(file) {
     const { error } =
         await supabase
             .storage
-            .from("posts")
+            .from("image_posts")
             .upload(
                 filename,
                 file,
@@ -145,7 +145,7 @@ async function uploadImage(file) {
     const { data } =
         supabase
             .storage
-            .from("posts")
+            .from("image_posts")
             .getPublicUrl(filename);
 
 
