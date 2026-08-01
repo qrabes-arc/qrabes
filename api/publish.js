@@ -39,7 +39,7 @@ export default async function handler(req, res) {
 
         const owner = "qrabes-arc";
         const repo = "qrabes";
-        const path = "public/user_posts.json";
+        const path = "data/user_posts.json";
 
         // Read existing JSON from GitHub
 
