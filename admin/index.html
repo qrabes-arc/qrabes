@@ -430,13 +430,17 @@ Published posts will appear here.
 
 </div>
 
+<script>
+alert("INDEX HTML LOADED");
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-console.log("Supabase CDN:", window.supabase);
+alert("BEFORE SCRIPT JS");
 </script>
 
-<script src="./script.js"></script>
+<script src="/admin/script.js?v=999"></script>
+
 </body>
 </html>
