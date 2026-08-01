@@ -1,3 +1,4 @@
+alert("SCRIPT JS LOADED");
 // =====================================
 // QRABES CMS
 // FINAL admin/script.js
