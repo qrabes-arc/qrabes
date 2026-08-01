@@ -279,22 +279,29 @@ publishBtn.addEventListener("click", async () => {
 
         const result = await response.json();
 
-        if (!response.ok) {
+if (!response.ok) {
 
-            throw new Error(result.error || "Publish Failed");
+    throw new Error(result.error || "Publish Failed");
 
-        }
+}
 
-        message.classList.remove("hidden");
-        message.innerText = "✅ Post Published Successfully";
+// Success message
 
-        setTimeout(() => {
+message.classList.remove("hidden");
 
-            message.classList.add("hidden");
+message.innerText = "✅ Post Published Successfully";
 
-        }, 3000);
+// Refresh Recent Posts
 
-        // Reset Form
+await loadRecentPosts();
+
+setTimeout(() => {
+
+    message.classList.add("hidden");
+
+}, 3000);
+
+// Reset Form
 
         document.getElementById("title").value = "";
         document.getElementById("description").value = "";
@@ -322,3 +329,322 @@ publishBtn.addEventListener("click", async () => {
 
 });
 
+// ===============================
+// PART 3
+// RECENT POSTS
+// ===============================
+
+async function loadRecentPosts() {
+
+    const postsContainer =
+        document.getElementById("postsContainer");
+
+    if (!postsContainer) return;
+
+    // Loading state
+
+    postsContainer.innerHTML = `
+        <div class="bg-[#181818] border border-gray-700 rounded-2xl p-5 text-center">
+            <p class="text-gray-400">
+                Loading posts...
+            </p>
+        </div>
+    `;
+
+    try {
+
+        // Add timestamp to prevent old cached JSON
+
+        const response = await fetch(
+            `/user_posts.json?t=${Date.now()}`
+        );
+
+        if (!response.ok) {
+
+            throw new Error(
+                `Failed to load posts (${response.status})`
+            );
+
+        }
+
+        const posts = await response.json();
+
+        // No posts
+
+        if (!Array.isArray(posts) || posts.length === 0) {
+
+            postsContainer.innerHTML = `
+                <div class="bg-[#181818] border border-gray-700 rounded-2xl p-5">
+                    <h3 class="text-lg font-semibold">
+                        No Posts Yet
+                    </h3>
+
+                    <p class="text-gray-400 mt-2">
+                        Published posts will appear here.
+                    </p>
+                </div>
+            `;
+
+            return;
+
+        }
+
+        // Clear container
+
+        postsContainer.innerHTML = "";
+
+        // Show latest first
+
+        posts.slice(0, 20).forEach(post => {
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "bg-[#181818] border border-gray-700 rounded-2xl p-5";
+
+            // Date
+
+            let formattedDate = "Unknown date";
+
+            if (post.published_at) {
+
+                const date =
+                    new Date(post.published_at);
+
+                if (!isNaN(date.getTime())) {
+
+                    formattedDate =
+                        date.toLocaleDateString(
+                            "en-IN",
+                            {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric"
+                            }
+                        );
+
+                }
+
+            }
+
+            // Tags
+
+            let tagsHTML = "";
+
+            if (
+                Array.isArray(post.tags) &&
+                post.tags.length
+            ) {
+
+                tagsHTML = post.tags
+                    .map(tag => `
+                        <span class="inline-block bg-[#252525] text-gray-300 text-xs px-3 py-1 rounded-full mr-1 mb-1">
+                            #${escapeHTML(tag)}
+                        </span>
+                    `)
+                    .join("");
+
+            }
+
+            // Featured
+
+            const featuredHTML =
+                post.featured
+                    ? `
+                        <span class="text-xs bg-yellow-500 text-black px-2 py-1 rounded-full font-semibold">
+                            ⭐ Featured
+                        </span>
+                    `
+                    : "";
+
+            // Trending
+
+            const trendingHTML =
+                post.trending
+                    ? `
+                        <span class="text-xs bg-red-500 text-white px-2 py-1 rounded-full font-semibold">
+                            🔥 Trending
+                        </span>
+                    `
+                    : "";
+
+            card.innerHTML = `
+
+                <div class="flex flex-col md:flex-row gap-5">
+
+                    <!-- Image -->
+
+                    <div class="w-full md:w-48 h-40 flex-shrink-0">
+
+                        <img
+                            src="${escapeHTML(post.image || "")}"
+                            alt="${escapeHTML(post.title || "Post")}"
+                            class="w-full h-full object-cover rounded-xl border border-gray-700"
+                            loading="lazy"
+                            onerror="this.style.display='none'"
+                        >
+
+                    </div>
+
+
+                    <!-- Content -->
+
+                    <div class="flex-1">
+
+                        <div class="flex flex-wrap gap-2 mb-3">
+
+                            ${featuredHTML}
+
+                            ${trendingHTML}
+
+                            ${
+                                post.category
+                                    ? `
+                                        <span class="text-xs bg-[#252525] text-gray-300 px-2 py-1 rounded-full">
+                                            ${escapeHTML(post.category)}
+                                        </span>
+                                    `
+                                    : ""
+                            }
+
+                        </div>
+
+
+                        <h3 class="text-xl font-semibold text-white">
+
+                            ${escapeHTML(
+                                post.title || "Untitled Post"
+                            )}
+
+                        </h3>
+
+
+                        <p class="text-gray-400 mt-2 line-clamp-3">
+
+                            ${escapeHTML(
+                                post.description || ""
+                            )}
+
+                        </p>
+
+
+                        <div class="flex flex-wrap gap-3 text-sm text-gray-500 mt-4">
+
+                            <span>
+                                👤 ${escapeHTML(
+                                    post.author || "QRABES"
+                                )}
+                            </span>
+
+                            <span>
+                                📅 ${formattedDate}
+                            </span>
+
+                            <span>
+                                ❤️ ${Number(post.likes || 0)}
+                            </span>
+
+                            <span>
+                                👁️ ${Number(post.views || 0)}
+                            </span>
+
+                        </div>
+
+
+                        <div class="mt-4">
+
+                            ${tagsHTML}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            postsContainer.appendChild(card);
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Recent Posts Error:",
+            error
+        );
+
+        postsContainer.innerHTML = `
+
+            <div class="bg-[#181818] border border-red-900 rounded-2xl p-5">
+
+                <h3 class="text-lg font-semibold text-red-400">
+
+                    Failed to Load Posts
+
+                </h3>
+
+                <p class="text-gray-400 mt-2">
+
+                    ${escapeHTML(error.message)}
+
+                </p>
+
+                <button
+                    id="retryPosts"
+                    class="mt-4 px-4 py-2 bg-[#D4AF37] text-black rounded-lg font-semibold">
+
+                    Retry
+
+                </button>
+
+            </div>
+
+        `;
+
+        const retryButton =
+            document.getElementById("retryPosts");
+
+        if (retryButton) {
+
+            retryButton.addEventListener(
+                "click",
+                loadRecentPosts
+            );
+
+        }
+
+    }
+
+}
+
+
+// ===============================
+// HTML SAFETY
+// ===============================
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+// ===============================
+// LOAD POSTS WHEN ADMIN OPENS
+// ===============================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        loadRecentPosts();
+
+    }
+);
