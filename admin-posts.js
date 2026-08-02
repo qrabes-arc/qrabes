@@ -1,40 +1,37 @@
 // ==========================================
-// QRABES USER POSTS
-// Loads data/user_posts.json
+// QRABES ADMIN / USER POSTS
+// Loads posts from data/user_posts.json
 // ==========================================
 
-const userPostsFeed = document.getElementById("user-posts-feed");
-
-const USER_POSTS_URL =
+const ADMIN_POSTS_URL =
     "./data/user_posts.json?cache=" + Date.now();
 
-const USER_FALLBACK_IMAGE =
-    "https://placehold.co/900x700/111111/FFFFFF?text=QRABES";
-
 
 // ==========================================
-// FETCH USER POSTS
+// FETCH ADMIN POSTS
 // ==========================================
 
-async function fetchUserPosts() {
-
-    if (!userPostsFeed) {
-        console.error("user-posts-feed not found");
-        return;
-    }
+async function fetchAdminPosts() {
 
     try {
 
-        const response = await fetch(USER_POSTS_URL);
+        const response = await fetch(ADMIN_POSTS_URL);
 
         if (!response.ok) {
-            throw new Error("Unable to load user_posts.json");
+
+            throw new Error(
+                "Unable to load data/user_posts.json"
+            );
+
         }
 
         const data = await response.json();
 
+        console.log("ADMIN POSTS DATA:", data);
+
+
         // Only published posts
-        const posts = data.filter(post => {
+        const adminPosts = data.filter(post => {
 
             return post &&
                    post.title &&
@@ -43,14 +40,26 @@ async function fetchUserPosts() {
 
         });
 
-        renderUserPosts(posts);
+
+        console.log(
+            "PUBLISHED ADMIN POSTS:",
+            adminPosts
+        );
+
+
+        // Add posts to existing feed
+        adminPosts.forEach(post => {
+
+            createAdminPost(post);
+
+        });
 
     }
 
     catch (error) {
 
         console.error(
-            "User Posts Error:",
+            "ADMIN POSTS ERROR:",
             error
         );
 
@@ -60,41 +69,42 @@ async function fetchUserPosts() {
 
 
 // ==========================================
-// RENDER USER POSTS
+// CREATE ADMIN POST
 // ==========================================
 
-function renderUserPosts(posts) {
+function createAdminPost(post) {
 
-    userPostsFeed.innerHTML = "";
+    const feed = document.getElementById("feed");
 
-    posts.forEach(post => {
+    if (!feed) {
 
-        createUserPostCard(post);
+        console.error(
+            "QRABES feed element not found"
+        );
 
-    });
+        return;
 
-}
+    }
 
-
-// ==========================================
-// CREATE USER POST CARD
-// ==========================================
-
-function createUserPostCard(post) {
 
     const card = document.createElement("article");
 
-    card.className = "post user-post";
+    card.className = "post admin-post";
+
 
     const image =
         post.image &&
         post.image.trim() !== ""
+
             ? post.image
-            : USER_FALLBACK_IMAGE;
+
+            : "https://placehold.co/900x700/111111/FFFFFF?text=QRABES";
+
 
     const description =
         (post.description || "")
         .substring(0, 160);
+
 
     card.innerHTML = `
 
@@ -105,7 +115,7 @@ function createUserPostCard(post) {
                 alt="${post.title || "QRABES"}"
                 loading="lazy"
                 decoding="async"
-                onerror="this.src='${USER_FALLBACK_IMAGE}'"
+                onerror="this.src='https://placehold.co/900x700/111111/FFFFFF?text=QRABES'"
             >
 
         </div>
@@ -117,6 +127,7 @@ function createUserPostCard(post) {
                 ${post.title || "QRABES"}
             </h2>
 
+
             <p>
                 ${description}
             </p>
@@ -124,7 +135,7 @@ function createUserPostCard(post) {
 
             <div class="actions">
 
-                <button class="user-like-btn">
+                <button class="like-btn">
 
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -139,17 +150,17 @@ function createUserPostCard(post) {
                     >
 
                         <path d="
-                        M20.84 4.61
-                        a5.5 5.5 0 0 0-7.78 0
-                        L12 5.67
-                        l-1.06-1.06
-                        a5.5 5.5 0 0 0-7.78 7.78
-                        l1.06 1.06
-                        L12 21.23
-                        l7.78-7.78
-                        1.06-1.06
-                        a5.5 5.5 0 0 0 0-7.78
-                        z">
+                            M20.84 4.61
+                            a5.5 5.5 0 0 0-7.78 0
+                            L12 5.67
+                            l-1.06-1.06
+                            a5.5 5.5 0 0 0-7.78 7.78
+                            l1.06 1.06
+                            L12 21.23
+                            l7.78-7.78
+                            1.06-1.06
+                            a5.5 5.5 0 0 0 0-7.78
+                            z">
                         </path>
 
                     </svg>
@@ -179,7 +190,7 @@ function createUserPostCard(post) {
                 </button>
 
 
-                <button class="user-share-btn">
+                <button class="share">
 
                     <svg
                         viewBox="0 0 24 24"
@@ -247,7 +258,7 @@ function createUserPostCard(post) {
     `;
 
 
-    userPostsFeed.appendChild(card);
+    feed.appendChild(card);
 
 }
 
@@ -256,4 +267,4 @@ function createUserPostCard(post) {
 // START
 // ==========================================
 
-fetchUserPosts();
+fetchAdminPosts();
