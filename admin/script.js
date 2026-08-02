@@ -367,7 +367,7 @@ async function publishPost() {
 
         const response =
             await fetch(
-                "/api/publish",
+                "/api/publish.js",
                 {
 
                     method: "POST",
