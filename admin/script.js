@@ -1,4 +1,4 @@
-alert("SCRIPT JS LOADED");
+
 
 // =====================================
 // QRABES CMS
