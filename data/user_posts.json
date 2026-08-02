@@ -32,22 +32,5 @@
     "shares": 0,
     "views": 0,
     "published_at": "2026-08-02T09:23:26.030Z"
-  },
-  {
-    "id": 1785651071917,
-    "title": "qrabes",
-    "description": "logo of qrabes",
-    "image": "https://bfcjuwbeyrdrgfoejaaw.supabase.co/storage/v1/object/public/image_posts/post_1785651068037_sdmpaw.png",
-    "category": "",
-    "author": "QRABES",
-    "tags": [],
-    "featured": false,
-    "trending": false,
-    "status": "publish",
-    "likes": 0,
-    "comments": 0,
-    "shares": 0,
-    "views": 0,
-    "published_at": "2026-08-02T06:11:11.917Z"
   }
 ]
