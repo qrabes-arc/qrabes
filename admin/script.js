@@ -13,7 +13,7 @@ const SUPABASE_URL =
     "https://bfcjuwbeyrdrgfoejaaw.supabase.co";
 
 const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzIiwicmVmIjoiYmZjandid2V5cmRyZ2ZvZWphYXciLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4NTIxNjMxOSwiZXhwIjoyMTAwNzkyMzE5fQ.oTHDKWrHJWQf-OrNsWxnL4U8ouZa16bPmCWeNL_L_CE";
+    "sb_publishable_l2J49vtmNJW8bp6KZp4img_UX-QyiQ_";
 
 
 // =====================================
