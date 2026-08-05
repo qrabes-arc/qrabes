@@ -1,5 +1,5 @@
 // ======================================
-// QRABES HOME AUTH SYSTEM
+// QRABES HOME AUTH DEBUG
 // ======================================
 
 const SUPABASE_URL =
@@ -8,28 +8,55 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_l2J49vtmNJW8bpK6Zp4img_UX-QyiQ_";
 
-const supabaseClient = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
+const supabaseClient =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
-
-// ======================================
-// CHECK LOGIN STATUS
-// ======================================
 
 async function checkHomeAuth() {
+
+    console.log("HOME AUTH JS LOADED");
+
 
     const signupBtn =
         document.getElementById("signupBtn");
 
-    if (!signupBtn) return;
+
+    console.log(
+        "SIGNUP BUTTON:",
+        signupBtn
+    );
+
+
+    if (!signupBtn) {
+
+        console.error(
+            "signupBtn NOT FOUND"
+        );
+
+        return;
+    }
 
 
     const {
         data: { session },
         error
-    } = await supabaseClient.auth.getSession();
+    } =
+        await supabaseClient.auth.getSession();
+
+
+    console.log(
+        "SESSION:",
+        session
+    );
+
+
+    console.log(
+        "SESSION ERROR:",
+        error
+    );
 
 
     if (error) {
@@ -43,48 +70,59 @@ async function checkHomeAuth() {
     }
 
 
-    // ==================================
-    // USER NOT LOGGED IN
-    // ==================================
-
     if (!session || !session.user) {
 
-        signupBtn.textContent = "Sign Up";
+        console.log(
+            "USER IS NOT LOGGED IN"
+        );
 
-        signupBtn.href = "/Log-in/login.html";
+        signupBtn.textContent =
+            "Sign Up";
+
+        signupBtn.href =
+            "/Log-in/login.html";
 
         return;
     }
 
-
-    // ==================================
-    // USER LOGGED IN
-    // ==================================
 
     const user =
         session.user;
 
 
     console.log(
-        "LOGGED IN USER:",
+        "LOGGED IN USER ID:",
         user.id
     );
 
 
     // ==================================
-    // GET PROFILE
+    // PROFILE
     // ==================================
 
     const {
         data: profile,
         error: profileError
-    } = await supabaseClient
-        .from("profiles")
-        .select(
-            "username, access_expires_at"
-        )
-        .eq("id", user.id)
-        .single();
+    } =
+        await supabaseClient
+            .from("profiles")
+            .select(
+                "id, username, access_expires_at"
+            )
+            .eq("id", user.id)
+            .maybeSingle();
+
+
+    console.log(
+        "PROFILE:",
+        profile
+    );
+
+
+    console.log(
+        "PROFILE ERROR:",
+        profileError
+    );
 
 
     if (profileError) {
@@ -98,8 +136,19 @@ async function checkHomeAuth() {
     }
 
 
+    if (!profile) {
+
+        console.error(
+            "NO PROFILE FOUND FOR USER:",
+            user.id
+        );
+
+        return;
+    }
+
+
     // ==================================
-    // SHOW PROFILE BUTTON
+    // SHOW PROFILE
     // ==================================
 
     signupBtn.textContent =
@@ -108,11 +157,12 @@ async function checkHomeAuth() {
     signupBtn.href =
         "/profile.html";
 
+
+    console.log(
+        "PROFILE BUTTON UPDATED"
+    );
+
 }
 
-
-// ======================================
-// RUN
-// ======================================
 
 checkHomeAuth();
