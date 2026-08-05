@@ -1039,7 +1039,72 @@ Luxury Digital Magazine
 </footer>
 
 
+<!-- LOGOUT CONFIRMATION MODAL -->
 
+<div
+id="logoutModal"
+class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/70 backdrop-blur-sm px-5">
+
+    <div
+    class="w-full max-w-[360px] rounded-2xl bg-[#191919] border border-white/[0.08] shadow-[0_25px_80px_rgba(0,0,0,.55)] p-6">
+
+        <div class="text-center">
+
+            <div
+            class="mx-auto w-12 h-12 rounded-full bg-white/[0.06] flex items-center justify-center text-white mb-4">
+
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="23"
+                height="23"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                viewBox="0 0 24 24">
+
+                    <path d="M10 17l5-5-5-5"/>
+                    <path d="M15 12H3"/>
+                    <path d="M21 19V5a2 2 0 0 0-2-2h-5"/>
+
+                </svg>
+
+            </div>
+
+            <h3 class="text-white text-lg font-semibold">
+                Log out of QRABES?
+            </h3>
+
+            <p class="text-[#777] text-sm mt-2 leading-relaxed">
+                Are you sure you want to log out of your account?
+            </p>
+
+            <div class="flex gap-3 mt-6">
+
+                <button
+                id="cancelLogout"
+                type="button"
+                class="flex-1 h-11 rounded-full border border-white/[0.08] text-[#999] text-sm font-medium hover:text-white hover:bg-white/[0.05] active:scale-[.98] transition">
+
+                    Cancel
+
+                </button>
+
+                <button
+                id="confirmLogout"
+                type="button"
+                class="flex-1 h-11 rounded-full bg-yellow-500 text-black text-sm font-semibold hover:bg-yellow-400 active:scale-[.98] transition">
+
+                    Logout
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 <script src="admin-posts.js"></script>
     
