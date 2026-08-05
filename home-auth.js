@@ -402,6 +402,29 @@ if (logoutBtn) {
         "click",
         async () => {
 
+            // ==================================
+            // CONFIRM LOGOUT
+            // ==================================
+
+            const confirmLogout =
+                confirm(
+                    "Are you sure you want to logout?"
+                );
+
+
+            // CANCEL
+
+            if (!confirmLogout) {
+
+                return;
+
+            }
+
+
+            // ==================================
+            // LOGOUT STARTED
+            // ==================================
+
             console.log(
                 "🚪 LOGOUT STARTED"
             );
@@ -414,16 +437,55 @@ if (logoutBtn) {
                 "Logging out...";
 
 
-            const {
-                error
-            } =
-                await supabaseClient.auth.signOut();
+            try {
+
+                const {
+                    error
+                } =
+                    await supabaseClient.auth.signOut();
 
 
-            if (error) {
+                if (error) {
+
+                    console.error(
+                        "❌ LOGOUT ERROR:",
+                        error
+                    );
+
+
+                    logoutBtn.disabled =
+                        false;
+
+                    logoutBtn.textContent =
+                        "Logout";
+
+
+                    alert(
+                        "Logout failed. Please try again."
+                    );
+
+                    return;
+
+                }
+
+
+                console.log(
+                    "✅ USER LOGGED OUT"
+                );
+
+
+                // ==================================
+                // GO HOME
+                // ==================================
+
+                window.location.href =
+                    "/";
+
+
+            } catch (error) {
 
                 console.error(
-                    "❌ LOGOUT ERROR:",
+                    "❌ LOGOUT SYSTEM ERROR:",
                     error
                 );
 
@@ -436,22 +498,10 @@ if (logoutBtn) {
 
 
                 alert(
-                    "Logout failed. Please try again."
+                    "Something went wrong. Please try again."
                 );
 
-                return;
             }
-
-
-            console.log(
-                "✅ USER LOGGED OUT"
-            );
-
-
-            // HOME PAGE RELOAD
-
-            window.location.href =
-                "/";
 
         }
     );
