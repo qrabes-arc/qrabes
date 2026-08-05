@@ -84,7 +84,12 @@ async function checkHomeAuth() {
 
         return;
     }
-
+console.log(
+    "🔥 USER LOGGED IN:",
+    session.user.id
+);
+    const user =
+    session.user;
 
     const user =
         session.user;
