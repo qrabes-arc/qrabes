@@ -53,38 +53,27 @@ if (!signupForm) {
 
 
         // ==================================
-        // BASIC VALIDATION
+        // VALIDATION
         // ==================================
 
         if (!username) {
-
             alert("Please enter a username");
             return;
-
         }
-
 
         if (!email) {
-
             alert("Please enter your email");
             return;
-
         }
-
 
         if (password.length < 6) {
-
             alert("Password must be at least 6 characters");
             return;
-
         }
 
-
         if (password !== confirmPassword) {
-
             alert("Passwords do not match");
             return;
-
         }
 
 
@@ -95,20 +84,17 @@ if (!signupForm) {
         const button =
             signupForm.querySelector("button[type='submit']");
 
-
         button.disabled = true;
         button.innerText = "Creating Account...";
 
 
         try {
 
-
             // ==================================
-            // CREATE SUPABASE AUTH USER
+            // 1. CREATE AUTH USER
             // ==================================
 
             console.log("Creating Supabase Auth user...");
-
 
             const { data, error } =
                 await supabaseClient.auth.signUp({
@@ -120,9 +106,7 @@ if (!signupForm) {
                     options: {
 
                         data: {
-
                             username: username
-
                         }
 
                     }
@@ -135,15 +119,14 @@ if (!signupForm) {
 
             if (error) {
 
-                console.error("SUPABASE SIGNUP ERROR:", error);
+                console.error(
+                    "SUPABASE SIGNUP ERROR:",
+                    error
+                );
 
                 alert(error.message);
 
-                button.disabled = false;
-                button.innerText = "Create Account";
-
                 return;
-
             }
 
 
@@ -151,17 +134,82 @@ if (!signupForm) {
 
                 alert("Account could not be created.");
 
-                button.disabled = false;
-                button.innerText = "Create Account";
-
                 return;
-
             }
+
+
+            const userId =
+                data.user.id;
 
 
             console.log(
                 "AUTH USER CREATED:",
-                data.user.id
+                userId
+            );
+
+
+            // ==================================
+            // 2. CREATE 30-DAY ACCESS
+            // ==================================
+
+            const now =
+                new Date();
+
+
+            const expiresAt =
+                new Date(
+                    now.getTime() +
+                    (30 * 24 * 60 * 60 * 1000)
+                );
+
+
+            // ==================================
+            // 3. INSERT PROFILE
+            // ==================================
+
+            const { error: profileError } =
+                await supabaseClient
+                    .from("profiles")
+                    .insert({
+
+                        id: userId,
+
+                        username: username,
+
+                        full_name: username,
+
+                        last_seen:
+                            now.toISOString(),
+
+                        access_expires_at:
+                            expiresAt.toISOString()
+
+                    });
+
+
+            if (profileError) {
+
+                console.error(
+                    "PROFILE INSERT ERROR:",
+                    profileError
+                );
+
+                alert(
+                    "Account created, but profile setup failed. Please contact support."
+                );
+
+                return;
+            }
+
+
+            console.log(
+                "PROFILE CREATED SUCCESSFULLY"
+            );
+
+
+            console.log(
+                "ACCESS EXPIRES:",
+                expiresAt.toISOString()
             );
 
 
@@ -170,7 +218,7 @@ if (!signupForm) {
             // ==================================
 
             alert(
-                "Account created successfully! 🎉"
+                "Account created successfully! 🎉\n\nYour 30-day access has started."
             );
 
 
