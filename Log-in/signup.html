@@ -8,311 +8,266 @@
 
 <title>Create Account • QRABES</title>
 
-
-<script src="https://cdn.tailwindcss.com"></script>
-
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
-
-<style>
-
-body{
-font-family:Inter,Arial,sans-serif;
-}
-
-</style>
-
+<link rel="stylesheet" href="login.css">
 
 </head>
 
+<body>
 
-<body class="bg-black text-white min-h-screen overflow-hidden">
+<div class="bg"></div>
 
+<div class="overlay"></div>
 
-<!-- Background -->
+<div class="container">
 
-<div class="fixed inset-0 bg-gradient-to-br from-black via-neutral-900 to-black"></div>
+<div class="login-card">
 
+<div class="logo-box">
 
-<div class="fixed inset-0 bg-black/50 backdrop-blur-sm"></div>
+<h1>QRABES</h1>
 
-
-
-<!-- Container -->
-
-<div class="relative min-h-screen flex items-center justify-center px-5">
-
-
-<div class="w-full max-w-md 
-bg-white/5 
-border border-white/10 
-backdrop-blur-xl
-rounded-3xl
-p-8
-shadow-2xl">
-
-
-
-<!-- Logo -->
-
-<div class="text-center mb-8">
-
-
-<h1 class="text-4xl font-bold tracking-widest text-white">
-QRABES
-</h1>
-
-
-<p class="text-gray-400 mt-2 text-sm">
+<p>
 Luxury Magazine • Social Platform
 </p>
 
-
 </div>
 
+<form id="signupForm">
 
 
+<!-- =========================================================
+     USERNAME
+========================================================= -->
 
-<form id="signupForm" class="space-y-5">
+<div class="input-group">
 
+<label>Username</label>
 
+<div class="input-box">
 
-<!-- Full Name -->
+<svg xmlns="http://www.w3.org/2000/svg"
+width="20"
+height="20"
+fill="none"
+stroke="currentColor"
+stroke-width="2"
+viewBox="0 0 24 24">
 
-<div>
+<circle
+cx="12"
+cy="8"
+r="4"/>
 
-<label class="text-sm text-gray-300">
-Full Name
-</label>
+<path
+d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/>
 
-
-<input
-id="fullName"
-type="text"
-placeholder="Enter your name"
-class="
-mt-2 w-full
-bg-black/40
-border border-white/10
-rounded-xl
-px-4 py-3
-outline-none
-focus:border-yellow-500
-transition
-">
-
-
-</div>
-
-
-
-
-
-<!-- Username -->
-
-<div>
-
-<label class="text-sm text-gray-300">
-Username
-</label>
-
+</svg>
 
 <input
 id="username"
 type="text"
-placeholder="Create username"
-class="
-mt-2 w-full
-bg-black/40
-border border-white/10
-rounded-xl
-px-4 py-3
-outline-none
-focus:border-yellow-500
-transition
-">
+placeholder="Create your username"
+required>
 
+</div>
 
 </div>
 
 
+<!-- =========================================================
+     EMAIL
+========================================================= -->
 
+<div class="input-group">
 
+<label>Email Address</label>
 
+<div class="input-box">
 
-<!-- Email -->
+<svg xmlns="http://www.w3.org/2000/svg"
+width="20"
+height="20"
+fill="none"
+stroke="currentColor"
+stroke-width="2"
+viewBox="0 0 24 24">
 
-<div>
+<path d="M4 4h16v16H4z"/>
 
-<label class="text-sm text-gray-300">
-Email Address
-</label>
+<path d="m4 7 8 6 8-6"/>
 
+</svg>
 
 <input
 id="email"
 type="email"
 placeholder="Enter your email"
-class="
-mt-2 w-full
-bg-black/40
-border border-white/10
-rounded-xl
-px-4 py-3
-outline-none
-focus:border-yellow-500
-transition
-">
+required>
 
+</div>
 
 </div>
 
 
+<!-- =========================================================
+     PASSWORD
+========================================================= -->
 
+<div class="input-group">
 
+<label>Password</label>
 
+<div class="input-box">
 
+<svg xmlns="http://www.w3.org/2000/svg"
+width="20"
+height="20"
+fill="none"
+stroke="currentColor"
+stroke-width="2"
+viewBox="0 0 24 24">
 
-<!-- Password -->
+<rect
+x="3"
+y="11"
+width="18"
+height="10"
+rx="2"/>
 
-<div>
+<path d="M7 11V7a5 5 0 0 1 10 0v4"/>
 
-<label class="text-sm text-gray-300">
-Password
-</label>
-
+</svg>
 
 <input
 id="password"
 type="password"
-placeholder="Create password"
-class="
-mt-2 w-full
-bg-black/40
-border border-white/10
-rounded-xl
-px-4 py-3
-outline-none
-focus:border-yellow-500
-transition
-">
+placeholder="Create your password"
+required>
 
+<button
+type="button"
+id="togglePassword"
+class="eye-btn">
+
+<svg xmlns="http://www.w3.org/2000/svg"
+width="20"
+height="20"
+fill="none"
+stroke="currentColor"
+stroke-width="2"
+viewBox="0 0 24 24">
+
+<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12"/>
+
+<circle
+cx="12"
+cy="12"
+r="3"/>
+
+</svg>
+
+</button>
+
+</div>
 
 </div>
 
 
+<!-- =========================================================
+     CONFIRM PASSWORD
+========================================================= -->
 
+<div class="input-group">
 
+<label>Confirm Password</label>
 
+<div class="input-box">
 
+<svg xmlns="http://www.w3.org/2000/svg"
+width="20"
+height="20"
+fill="none"
+stroke="currentColor"
+stroke-width="2"
+viewBox="0 0 24 24">
 
-<!-- Confirm Password -->
+<rect
+x="3"
+y="11"
+width="18"
+height="10"
+rx="2"/>
 
-<div>
+<path d="M7 11V7a5 5 0 0 1 10 0v4"/>
 
-<label class="text-sm text-gray-300">
-Confirm Password
-</label>
-
+</svg>
 
 <input
 id="confirmPassword"
 type="password"
-placeholder="Confirm password"
-class="
-mt-2 w-full
-bg-black/40
-border border-white/10
-rounded-xl
-px-4 py-3
-outline-none
-focus:border-yellow-500
-transition
-">
+placeholder="Confirm your password"
+required>
 
+</div>
 
 </div>
 
 
-
-
-
+<!-- =========================================================
+     CREATE ACCOUNT
+========================================================= -->
 
 <button
 type="submit"
-class="
-w-full
-py-3
-rounded-xl
-bg-yellow-500
-text-black
-font-semibold
-hover:bg-yellow-400
-transition
-">
+class="login-btn">
 
 Create Account
 
 </button>
 
 
+<div class="divider">
 
-
-
-
-<div class="flex items-center gap-3 my-5">
-
-<div class="h-px bg-white/10 flex-1"></div>
-
-<span class="text-gray-500 text-sm">
-OR
-</span>
-
-<div class="h-px bg-white/10 flex-1"></div>
+<span>OR</span>
 
 </div>
 
 
+<!-- =========================================================
+     LOGIN
+========================================================= -->
 
+<div class="signup">
 
-
-
-<p class="text-center text-gray-400 text-sm">
+<p>
 
 Already have an account?
 
-<a href="login.html"
-class="text-yellow-500 hover:underline">
+<a href="login.html">
 
 Login
 
 </a>
 
-
 </p>
 
-
+</div>
 
 </form>
 
-
 </div>
 
-
 </div>
-
 
 
 <script src="signup.js"></script>
 
-
 </body>
 
-  </html>
+</html>
