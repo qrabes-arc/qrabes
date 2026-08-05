@@ -1,5 +1,5 @@
 // ======================================
-// QRABES HOME AUTH TEST
+// QRABES HOME AUTH
 // ======================================
 
 const SUPABASE_URL =
@@ -16,14 +16,38 @@ const supabaseClient =
     );
 
 
+// ======================================
+// CHECK HOME AUTH
+// ======================================
+
 async function checkHomeAuth() {
 
     console.log("🔥 HOME AUTH STARTED");
 
 
+    // ==================================
+    // ELEMENTS
+    // ==================================
+
     const signupBtn =
         document.getElementById("signupBtn");
 
+    const userProfileBox =
+        document.getElementById("userProfileBox");
+
+    const profileUsername =
+        document.getElementById("profileUsername");
+
+    const followersCount =
+        document.getElementById("followersCount");
+
+    const followingCount =
+        document.getElementById("followingCount");
+
+
+    // ==================================
+    // CHECK ELEMENTS
+    // ==================================
 
     if (!signupBtn) {
 
@@ -34,6 +58,10 @@ async function checkHomeAuth() {
         return;
     }
 
+
+    // ==================================
+    // GET SESSION
+    // ==================================
 
     const {
         data: { session },
@@ -51,7 +79,7 @@ async function checkHomeAuth() {
     if (error) {
 
         console.error(
-            "SESSION ERROR:",
+            "❌ SESSION ERROR:",
             error
         );
 
@@ -69,42 +97,149 @@ async function checkHomeAuth() {
             "USER NOT LOGGED IN"
         );
 
-        signupBtn.textContent =
-            "Sign Up";
 
-        signupBtn.href =
-            "/Log-in/login.html";
+        // Show Sign Up
+
+        signupBtn.classList.remove(
+            "hidden"
+        );
+
+
+        // Hide Profile
+
+        if (userProfileBox) {
+
+            userProfileBox.classList.add(
+                "hidden"
+            );
+
+        }
+
 
         return;
     }
 
 
     // ==================================
-    // LOGGED IN
+    // USER LOGGED IN
     // ==================================
+
+    const user =
+        session.user;
+
 
     console.log(
         "🔥 USER LOGGED IN:",
-        session.user.id
+        user.id
     );
 
 
     // ==================================
-    // TEMPORARY PROFILE BUTTON
+    // GET USER PROFILE
     // ==================================
 
-    signupBtn.textContent =
-        "testuser";
+    const {
+        data: profile,
+        error: profileError
+    } =
+        await supabaseClient
+            .from("profiles")
+            .select(
+                "username"
+            )
+            .eq(
+                "id",
+                user.id
+            )
+            .maybeSingle();
 
-    signupBtn.href =
-        "/profile.html";
+
+    if (profileError) {
+
+        console.error(
+            "❌ PROFILE ERROR:",
+            profileError
+        );
+
+        return;
+    }
 
 
     console.log(
-        "✅ PROFILE BUTTON UPDATED"
+        "✅ PROFILE:",
+        profile
+    );
+
+
+    // ==================================
+    // HIDE SIGN UP
+    // ==================================
+
+    signupBtn.classList.add(
+        "hidden"
+    );
+
+
+    // ==================================
+    // SHOW PROFILE BOX
+    // ==================================
+
+    if (userProfileBox) {
+
+        userProfileBox.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    // ==================================
+    // USERNAME
+    // ==================================
+
+    if (profileUsername) {
+
+        profileUsername.textContent =
+            profile?.username ||
+            user.user_metadata?.username ||
+            "User";
+
+    }
+
+
+    // ==================================
+    // FOLLOWERS
+    // ==================================
+
+    if (followersCount) {
+
+        followersCount.textContent =
+            "0";
+
+    }
+
+
+    // ==================================
+    // FOLLOWING
+    // ==================================
+
+    if (followingCount) {
+
+        followingCount.textContent =
+            "0";
+
+    }
+
+
+    console.log(
+        "✅ PROFILE UI UPDATED"
     );
 
 }
 
+
+// ======================================
+// RUN
+// ======================================
 
 checkHomeAuth();
