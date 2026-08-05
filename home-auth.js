@@ -163,6 +163,6 @@ async function checkHomeAuth() {
     );
 
 }
-
+console.log("🔥 HOME AUTH RUNNING");
 
 checkHomeAuth();
