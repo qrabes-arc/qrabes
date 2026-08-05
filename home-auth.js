@@ -1,13 +1,19 @@
+// ======================================
+// QRABES HOME AUTH TEST
+// ======================================
+
 alert("HOME AUTH JS WORKING");
-// ======================================
-// QRABES HOME AUTH DEBUG
-// ======================================
+
 
 const SUPABASE_URL =
     "https://bfcjuwbeyrdrgfoejaaw.supabase.co";
 
 const SUPABASE_KEY =
     "sb_publishable_l2J49vtmNJW8bpK6Zp4img_UX-QyiQ_";
+
+
+console.log("1. SUPABASE SCRIPT:", typeof supabase);
+
 
 const supabaseClient =
     supabase.createClient(
@@ -16,94 +22,71 @@ const supabaseClient =
     );
 
 
-async function checkHomeAuth() {
+console.log(
+    "2. SUPABASE CLIENT CREATED"
+);
 
-    console.log("HOME AUTH JS LOADED");
 
-
-    const signupBtn =
-        document.getElementById("signupBtn");
-
+async function testHomeAuth() {
 
     console.log(
-        "SIGNUP BUTTON:",
-        signupBtn
+        "3. CHECKING SESSION..."
     );
 
 
-    if (!signupBtn) {
-
-        console.error(
-            "signupBtn NOT FOUND"
-        );
-
-        return;
-    }
-
-
     const {
-        data: { session },
+        data,
         error
     } =
         await supabaseClient.auth.getSession();
 
 
     console.log(
-        "SESSION:",
-        session
+        "4. SESSION DATA:",
+        data
     );
 
 
     console.log(
-        "SESSION ERROR:",
+        "5. SESSION ERROR:",
         error
     );
 
 
     if (error) {
 
-        console.error(
-            "SESSION CHECK ERROR:",
-            error
+        alert(
+            "SESSION ERROR: " +
+            error.message
         );
 
         return;
     }
 
 
-    if (!session || !session.user) {
+    if (!data.session) {
 
-        console.log(
-            "USER IS NOT LOGGED IN"
+        alert(
+            "NO SESSION FOUND"
         );
-
-        signupBtn.textContent =
-            "Sign Up";
-
-        signupBtn.href =
-            "/Log-in/login.html";
 
         return;
     }
-console.log(
-    "🔥 USER LOGGED IN:",
-    session.user.id
-);
-    const user =
-    session.user;
 
-    const user =
-        session.user;
+
+    alert(
+        "USER LOGGED IN ✅"
+    );
 
 
     console.log(
-        "LOGGED IN USER ID:",
-        user.id
+        "USER ID:",
+        data.session.user.id
     );
 
 
     // ==================================
-    // PROFILE
+    // CHECK PROFILE
     // ==================================
 
     const {
@@ -115,7 +98,10 @@ console.log(
             .select(
                 "id, username, access_expires_at"
             )
-            .eq("id", user.id)
+            .eq(
+                "id",
+                data.session.user.id
+            )
             .maybeSingle();
 
 
@@ -133,9 +119,9 @@ console.log(
 
     if (profileError) {
 
-        console.error(
-            "PROFILE LOAD ERROR:",
-            profileError
+        alert(
+            "PROFILE ERROR: " +
+            profileError.message
         );
 
         return;
@@ -144,31 +130,20 @@ console.log(
 
     if (!profile) {
 
-        console.error(
-            "NO PROFILE FOUND FOR USER:",
-            user.id
+        alert(
+            "PROFILE NOT FOUND"
         );
 
         return;
     }
 
 
-    // ==================================
-    // SHOW PROFILE
-    // ==================================
-
-    signupBtn.textContent =
-        profile.username || "Profile";
-
-    signupBtn.href =
-        "/profile.html";
-
-
-    console.log(
-        "PROFILE BUTTON UPDATED"
+    alert(
+        "PROFILE FOUND: " +
+        profile.username
     );
 
 }
-console.log("🔥 HOME AUTH RUNNING");
 
-checkHomeAuth();
+
+testHomeAuth();
