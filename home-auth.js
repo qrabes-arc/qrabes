@@ -386,54 +386,116 @@ async function updateHomeAuth() {
     }
 
 }
-
-
 // ======================================
-// LOGOUT
+// LOGOUT CONFIRMATION MODAL
 // ======================================
 
 const logoutBtn =
     document.getElementById("logoutBtn");
 
+const logoutModal =
+    document.getElementById("logoutModal");
 
-if (logoutBtn) {
+const cancelLogout =
+    document.getElementById("cancelLogout");
+
+const confirmLogout =
+    document.getElementById("confirmLogout");
+
+
+// ======================================
+// OPEN MODAL
+// ======================================
+
+if (logoutBtn && logoutModal) {
 
     logoutBtn.addEventListener(
         "click",
-        async () => {
+        () => {
 
-            // ==================================
-            // CONFIRM LOGOUT
-            // ==================================
+            logoutModal.classList.remove("hidden");
 
-            const confirmLogout =
-                confirm(
-                    "Are you sure you want to logout?"
-                );
+            logoutModal.classList.add("flex");
+
+            document.body.style.overflow = "hidden";
+
+        }
+    );
+
+}
 
 
-            // CANCEL
+// ======================================
+// CLOSE MODAL
+// ======================================
 
-            if (!confirmLogout) {
+function closeLogoutModal() {
 
-                return;
+    if (!logoutModal) return;
+
+    logoutModal.classList.remove("flex");
+
+    logoutModal.classList.add("hidden");
+
+    document.body.style.overflow = "";
+
+}
+
+
+// ======================================
+// CANCEL
+// ======================================
+
+if (cancelLogout) {
+
+    cancelLogout.addEventListener(
+        "click",
+        closeLogoutModal
+    );
+
+}
+
+
+// ======================================
+// CLICK OUTSIDE
+// ======================================
+
+if (logoutModal) {
+
+    logoutModal.addEventListener(
+        "click",
+        (e) => {
+
+            if (e.target === logoutModal) {
+
+                closeLogoutModal();
 
             }
 
+        }
+    );
 
-            // ==================================
-            // LOGOUT STARTED
-            // ==================================
+}
+
+
+// ======================================
+// CONFIRM LOGOUT
+// ======================================
+
+if (confirmLogout) {
+
+    confirmLogout.addEventListener(
+        "click",
+        async () => {
 
             console.log(
                 "🚪 LOGOUT STARTED"
             );
 
 
-            logoutBtn.disabled =
-                true;
+            confirmLogout.disabled = true;
 
-            logoutBtn.textContent =
+            confirmLogout.textContent =
                 "Logging out...";
 
 
@@ -453,16 +515,11 @@ if (logoutBtn) {
                     );
 
 
-                    logoutBtn.disabled =
+                    confirmLogout.disabled =
                         false;
 
-                    logoutBtn.textContent =
+                    confirmLogout.textContent =
                         "Logout";
-
-
-                    alert(
-                        "Logout failed. Please try again."
-                    );
 
                     return;
 
@@ -474,12 +531,7 @@ if (logoutBtn) {
                 );
 
 
-                // ==================================
-                // GO HOME
-                // ==================================
-
-                window.location.href =
-                    "/";
+                window.location.href = "/";
 
 
             } catch (error) {
@@ -490,16 +542,11 @@ if (logoutBtn) {
                 );
 
 
-                logoutBtn.disabled =
+                confirmLogout.disabled =
                     false;
 
-                logoutBtn.textContent =
+                confirmLogout.textContent =
                     "Logout";
-
-
-                alert(
-                    "Something went wrong. Please try again."
-                );
 
             }
 
@@ -508,7 +555,7 @@ if (logoutBtn) {
 
 }
 
-
+                
 // ======================================
 // AUTH STATE LISTENER
 // ======================================
