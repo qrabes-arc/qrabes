@@ -1,5 +1,10 @@
 // ======================================
-// QRABES HOME AUTH
+// QRABES HOME AUTH SYSTEM
+// ======================================
+
+
+// ======================================
+// SUPABASE CONNECTION
 // ======================================
 
 const SUPABASE_URL =
@@ -17,16 +22,16 @@ const supabaseClient =
 
 
 // ======================================
-// CHECK HOME AUTH
+// UPDATE HOME UI
 // ======================================
 
-async function checkHomeAuth() {
+async function updateHomeAuth() {
 
-    console.log("🔥 HOME AUTH STARTED");
+    console.log("🔥 HOME AUTH RUNNING");
 
 
     // ==================================
-    // ELEMENTS
+    // GET ELEMENTS
     // ==================================
 
     const signupBtn =
@@ -46,7 +51,7 @@ async function checkHomeAuth() {
 
 
     // ==================================
-    // CHECK ELEMENTS
+    // ELEMENT CHECK
     // ==================================
 
     if (!signupBtn) {
@@ -63,11 +68,38 @@ async function checkHomeAuth() {
     // GET SESSION
     // ==================================
 
-    const {
-        data: { session },
-        error
-    } =
-        await supabaseClient.auth.getSession();
+    let session = null;
+
+    try {
+
+        const result =
+            await supabaseClient.auth.getSession();
+
+
+        if (result.error) {
+
+            console.error(
+                "❌ SESSION ERROR:",
+                result.error
+            );
+
+            return;
+        }
+
+
+        session =
+            result.data?.session || null;
+
+
+    } catch (error) {
+
+        console.error(
+            "❌ SESSION CHECK FAILED:",
+            error
+        );
+
+        return;
+    }
 
 
     console.log(
@@ -76,36 +108,33 @@ async function checkHomeAuth() {
     );
 
 
-    if (error) {
-
-        console.error(
-            "❌ SESSION ERROR:",
-            error
-        );
-
-        return;
-    }
-
-
     // ==================================
-    // NOT LOGGED IN
+    // USER NOT LOGGED IN
     // ==================================
 
     if (!session || !session.user) {
 
         console.log(
-            "USER NOT LOGGED IN"
+            "👤 USER NOT LOGGED IN"
         );
 
 
-        // Show Sign Up
+        // SHOW SIGN UP
 
         signupBtn.classList.remove(
             "hidden"
         );
 
 
-        // Hide Profile
+        signupBtn.textContent =
+            "Sign Up";
+
+
+        signupBtn.href =
+            "/Log-in/login.html";
+
+
+        // HIDE PROFILE
 
         if (userProfileBox) {
 
@@ -135,43 +164,6 @@ async function checkHomeAuth() {
 
 
     // ==================================
-    // GET USER PROFILE
-    // ==================================
-
-    const {
-        data: profile,
-        error: profileError
-    } =
-        await supabaseClient
-            .from("profiles")
-            .select(
-                "username"
-            )
-            .eq(
-                "id",
-                user.id
-            )
-            .maybeSingle();
-
-
-    if (profileError) {
-
-        console.error(
-            "❌ PROFILE ERROR:",
-            profileError
-        );
-
-        return;
-    }
-
-
-    console.log(
-        "✅ PROFILE:",
-        profile
-    );
-
-
-    // ==================================
     // HIDE SIGN UP
     // ==================================
 
@@ -194,22 +186,17 @@ async function checkHomeAuth() {
 
 
     // ==================================
-    // USERNAME
+    // TEMPORARY DEFAULT VALUES
     // ==================================
 
     if (profileUsername) {
 
         profileUsername.textContent =
-            profile?.username ||
             user.user_metadata?.username ||
             "User";
 
     }
 
-
-    // ==================================
-    // FOLLOWERS
-    // ==================================
 
     if (followersCount) {
 
@@ -219,10 +206,6 @@ async function checkHomeAuth() {
     }
 
 
-    // ==================================
-    // FOLLOWING
-    // ==================================
-
     if (followingCount) {
 
         followingCount.textContent =
@@ -231,15 +214,180 @@ async function checkHomeAuth() {
     }
 
 
-    console.log(
-        "✅ PROFILE UI UPDATED"
-    );
+    // ==================================
+    // LOAD PROFILE FROM DATABASE
+    // ==================================
+
+    try {
+
+        console.log(
+            "🔎 LOADING PROFILE..."
+        );
+
+
+        const {
+            data: profile,
+            error: profileError
+        } =
+            await supabaseClient
+                .from("profiles")
+                .select(
+                    "id, username, full_name, last_seen, access_expires_at"
+                )
+                .eq(
+                    "id",
+                    user.id
+                )
+                .maybeSingle();
+
+
+        // ==================================
+        // PROFILE ERROR
+        // ==================================
+
+        if (profileError) {
+
+            console.error(
+                "❌ PROFILE ERROR:",
+                profileError
+            );
+
+            // Profile error ke wajah se
+            // pura UI hide nahi karenge.
+
+            return;
+        }
+
+
+        // ==================================
+        // PROFILE NOT FOUND
+        // ==================================
+
+        if (!profile) {
+
+            console.warn(
+                "⚠️ PROFILE NOT FOUND FOR USER:",
+                user.id
+            );
+
+            return;
+        }
+
+
+        console.log(
+            "✅ PROFILE LOADED:",
+            profile
+        );
+
+
+        // ==================================
+        // USERNAME
+        // ==================================
+
+        if (profileUsername) {
+
+            profileUsername.textContent =
+                profile.username ||
+                profile.full_name ||
+                user.user_metadata?.username ||
+                "User";
+
+        }
+
+
+        // ==================================
+        // LAST SEEN
+        // ==================================
+
+        console.log(
+            "LAST SEEN:",
+            profile.last_seen
+        );
+
+
+        // ==================================
+        // ACCESS EXPIRATION
+        // ==================================
+
+        console.log(
+            "ACCESS EXPIRES:",
+            profile.access_expires_at
+        );
+
+
+        // ==================================
+        // FOLLOWERS
+        // ==================================
+
+        if (followersCount) {
+
+            followersCount.textContent =
+                "0";
+
+        }
+
+
+        // ==================================
+        // FOLLOWING
+        // ==================================
+
+        if (followingCount) {
+
+            followingCount.textContent =
+                "0";
+
+        }
+
+
+        console.log(
+            "✅ PROFILE UI UPDATED"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "❌ PROFILE LOAD FAILED:",
+            error
+        );
+
+    }
 
 }
 
 
 // ======================================
-// RUN
+// AUTH STATE LISTENER
 // ======================================
 
-checkHomeAuth();
+supabaseClient.auth.onAuthStateChange(
+    (event, session) => {
+
+        console.log(
+            "🔐 AUTH EVENT:",
+            event
+        );
+
+
+        // Auth change ke baad UI update
+
+        setTimeout(() => {
+
+            updateHomeAuth();
+
+        }, 0);
+
+    }
+);
+
+
+// ======================================
+// INITIAL LOAD
+// ======================================
+
+updateHomeAuth();
+
+
+// ======================================
+// END
+// ======================================
