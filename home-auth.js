@@ -2,17 +2,11 @@
 // QRABES HOME AUTH TEST
 // ======================================
 
-alert("HOME AUTH JS WORKING");
-
-
 const SUPABASE_URL =
     "https://bfcjuwbeyrdrgfoejaaw.supabase.co";
 
 const SUPABASE_KEY =
     "sb_publishable_l2J49vtmNJW8bpK6Zp4img_UX-QyiQ_";
-
-
-console.log("1. SUPABASE SCRIPT:", typeof supabase);
 
 
 const supabaseClient =
@@ -22,128 +16,95 @@ const supabaseClient =
     );
 
 
-console.log(
-    "2. SUPABASE CLIENT CREATED"
-);
+async function checkHomeAuth() {
+
+    console.log("🔥 HOME AUTH STARTED");
 
 
-async function testHomeAuth() {
+    const signupBtn =
+        document.getElementById("signupBtn");
 
-    console.log(
-        "3. CHECKING SESSION..."
-    );
+
+    if (!signupBtn) {
+
+        console.error(
+            "❌ signupBtn NOT FOUND"
+        );
+
+        return;
+    }
 
 
     const {
-        data,
+        data: { session },
         error
     } =
         await supabaseClient.auth.getSession();
 
 
     console.log(
-        "4. SESSION DATA:",
-        data
-    );
-
-
-    console.log(
-        "5. SESSION ERROR:",
-        error
+        "SESSION:",
+        session
     );
 
 
     if (error) {
 
-        alert(
-            "SESSION ERROR: " +
-            error.message
+        console.error(
+            "SESSION ERROR:",
+            error
         );
 
         return;
     }
 
 
-    if (!data.session) {
+    // ==================================
+    // NOT LOGGED IN
+    // ==================================
 
-        alert(
-            "NO SESSION FOUND"
+    if (!session || !session.user) {
+
+        console.log(
+            "USER NOT LOGGED IN"
         );
+
+        signupBtn.textContent =
+            "Sign Up";
+
+        signupBtn.href =
+            "/Log-in/login.html";
 
         return;
     }
 
 
-    alert(
-        "USER LOGGED IN ✅"
-    );
-
+    // ==================================
+    // LOGGED IN
+    // ==================================
 
     console.log(
-        "USER ID:",
-        data.session.user.id
+        "🔥 USER LOGGED IN:",
+        session.user.id
     );
 
 
     // ==================================
-    // CHECK PROFILE
+    // TEMPORARY PROFILE BUTTON
     // ==================================
 
-    const {
-        data: profile,
-        error: profileError
-    } =
-        await supabaseClient
-            .from("profiles")
-            .select(
-                "id, username, access_expires_at"
-            )
-            .eq(
-                "id",
-                data.session.user.id
-            )
-            .maybeSingle();
+    signupBtn.textContent =
+        "testuser";
+
+    signupBtn.href =
+        "/profile.html";
 
 
     console.log(
-        "PROFILE:",
-        profile
-    );
-
-
-    console.log(
-        "PROFILE ERROR:",
-        profileError
-    );
-
-
-    if (profileError) {
-
-        alert(
-            "PROFILE ERROR: " +
-            profileError.message
-        );
-
-        return;
-    }
-
-
-    if (!profile) {
-
-        alert(
-            "PROFILE NOT FOUND"
-        );
-
-        return;
-    }
-
-
-    alert(
-        "PROFILE FOUND: " +
-        profile.username
+        "✅ PROFILE BUTTON UPDATED"
     );
 
 }
 
 
-testHomeAuth();
+checkHomeAuth();
