@@ -188,11 +188,21 @@ class="fixed top-[72px] left-0 z-[60] h-[calc(100vh-72px)] w-[320px] max-w-[86vw
 
 <div class="px-6 pt-5 pb-4">
 
-<!-- SIGN UP -->
+
+<!-- =========================================================
+     SIDEBAR TOP
+========================================================= -->
+
+<div class="px-6 pt-5 pb-4">
+
+
+<!-- =========================================================
+     LOGGED OUT : SIGN UP
+========================================================= -->
 
 <a
 id="signupBtn"
-href="Log-in/signup.html"
+href="/Log-in/login.html"
 class="w-full h-11 flex items-center justify-center rounded-full bg-yellow-500 text-black text-sm font-semibold hover:bg-yellow-400 active:scale-[.98] transition-all duration-200">
 
 Sign Up
@@ -200,6 +210,136 @@ Sign Up
 </a>
 
 
+<!-- =========================================================
+     LOGGED IN : PROFILE
+========================================================= -->
+
+<div
+id="userProfileBox"
+class="hidden">
+
+
+<!-- PROFILE -->
+
+<div class="flex items-center gap-3">
+
+
+<!-- PROFILE ICON -->
+
+<div
+class="w-12 h-12 rounded-full bg-[#242424] flex items-center justify-center text-white shrink-0">
+
+<svg
+xmlns="http://www.w3.org/2000/svg"
+width="23"
+height="23"
+fill="none"
+stroke="currentColor"
+stroke-width="1.8"
+viewBox="0 0 24 24">
+
+<circle
+cx="12"
+cy="8"
+r="4"/>
+
+<path
+d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/>
+
+</svg>
+
+</div>
+
+
+<!-- USERNAME -->
+
+<div class="min-w-0">
+
+<p
+id="profileUsername"
+class="text-white text-[15px] font-semibold truncate">
+
+Username
+
+</p>
+
+<p
+class="text-[#666] text-xs">
+
+QRABES Member
+
+</p>
+
+</div>
+
+</div>
+
+
+<!-- FOLLOWERS / FOLLOWING -->
+
+<div class="flex items-center gap-8 mt-5">
+
+
+<div>
+
+<p
+id="followersCount"
+class="text-white text-sm font-semibold">
+
+0
+
+</p>
+
+<p
+class="text-[#666] text-xs mt-1">
+
+Followers
+
+</p>
+
+</div>
+
+
+<div>
+
+<p
+id="followingCount"
+class="text-white text-sm font-semibold">
+
+0
+
+</p>
+
+<p
+class="text-[#666] text-xs mt-1">
+
+Following
+
+</p>
+
+</div>
+
+
+</div>
+
+
+<!-- CREATE POST -->
+
+<button
+id="createPostBtn"
+type="button"
+class="w-full h-11 mt-5 flex items-center justify-center gap-2 rounded-full bg-yellow-500 text-black text-sm font-semibold hover:bg-yellow-400 active:scale-[.98] transition-all duration-200">
+
+<span class="text-lg leading-none">
++
+</span>
+
+Create a Post
+
+</button>
+
+
+</div>
 <!-- CLOSE BUTTON -->
 
 <div class="flex justify-end mt-3">
