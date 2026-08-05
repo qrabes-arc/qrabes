@@ -22,7 +22,7 @@ const supabaseClient =
 
 
 // ======================================
-// UPDATE HOME UI
+// CHECK HOME AUTH
 // ======================================
 
 async function updateHomeAuth() {
@@ -31,7 +31,7 @@ async function updateHomeAuth() {
 
 
     // ==================================
-    // GET ELEMENTS
+    // ELEMENTS
     // ==================================
 
     const signupBtn =
@@ -48,6 +48,9 @@ async function updateHomeAuth() {
 
     const followingCount =
         document.getElementById("followingCount");
+
+    const logoutBtn =
+        document.getElementById("logoutBtn");
 
 
     // ==================================
@@ -72,15 +75,18 @@ async function updateHomeAuth() {
 
     try {
 
-        const result =
+        const {
+            data,
+            error
+        } =
             await supabaseClient.auth.getSession();
 
 
-        if (result.error) {
+        if (error) {
 
             console.error(
                 "❌ SESSION ERROR:",
-                result.error
+                error
             );
 
             return;
@@ -88,7 +94,7 @@ async function updateHomeAuth() {
 
 
         session =
-            result.data?.session || null;
+            data?.session || null;
 
 
     } catch (error) {
@@ -119,26 +125,35 @@ async function updateHomeAuth() {
         );
 
 
-        // SHOW SIGN UP
+        // SIGN UP SHOW
 
         signupBtn.classList.remove(
             "hidden"
         );
 
-
         signupBtn.textContent =
             "Sign Up";
-
 
         signupBtn.href =
             "/Log-in/login.html";
 
 
-        // HIDE PROFILE
+        // PROFILE HIDE
 
         if (userProfileBox) {
 
             userProfileBox.classList.add(
+                "hidden"
+            );
+
+        }
+
+
+        // LOGOUT HIDE
+
+        if (logoutBtn) {
+
+            logoutBtn.classList.add(
                 "hidden"
             );
 
@@ -173,7 +188,7 @@ async function updateHomeAuth() {
 
 
     // ==================================
-    // SHOW PROFILE BOX
+    // SHOW PROFILE
     // ==================================
 
     if (userProfileBox) {
@@ -186,7 +201,20 @@ async function updateHomeAuth() {
 
 
     // ==================================
-    // TEMPORARY DEFAULT VALUES
+    // SHOW LOGOUT
+    // ==================================
+
+    if (logoutBtn) {
+
+        logoutBtn.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    // ==================================
+    // DEFAULT USERNAME
     // ==================================
 
     if (profileUsername) {
@@ -198,6 +226,10 @@ async function updateHomeAuth() {
     }
 
 
+    // ==================================
+    // DEFAULT FOLLOWERS
+    // ==================================
+
     if (followersCount) {
 
         followersCount.textContent =
@@ -205,6 +237,10 @@ async function updateHomeAuth() {
 
     }
 
+
+    // ==================================
+    // DEFAULT FOLLOWING
+    // ==================================
 
     if (followingCount) {
 
@@ -215,7 +251,7 @@ async function updateHomeAuth() {
 
 
     // ==================================
-    // LOAD PROFILE FROM DATABASE
+    // LOAD PROFILE
     // ==================================
 
     try {
@@ -252,9 +288,6 @@ async function updateHomeAuth() {
                 profileError
             );
 
-            // Profile error ke wajah se
-            // pura UI hide nahi karenge.
-
             return;
         }
 
@@ -266,8 +299,7 @@ async function updateHomeAuth() {
         if (!profile) {
 
             console.warn(
-                "⚠️ PROFILE NOT FOUND FOR USER:",
-                user.id
+                "⚠️ PROFILE NOT FOUND"
             );
 
             return;
@@ -306,7 +338,7 @@ async function updateHomeAuth() {
 
 
         // ==================================
-        // ACCESS EXPIRATION
+        // ACCESS EXPIRES
         // ==================================
 
         console.log(
@@ -357,6 +389,77 @@ async function updateHomeAuth() {
 
 
 // ======================================
+// LOGOUT
+// ======================================
+
+const logoutBtn =
+    document.getElementById("logoutBtn");
+
+
+if (logoutBtn) {
+
+    logoutBtn.addEventListener(
+        "click",
+        async () => {
+
+            console.log(
+                "🚪 LOGOUT STARTED"
+            );
+
+
+            logoutBtn.disabled =
+                true;
+
+            logoutBtn.textContent =
+                "Logging out...";
+
+
+            const {
+                error
+            } =
+                await supabaseClient.auth.signOut();
+
+
+            if (error) {
+
+                console.error(
+                    "❌ LOGOUT ERROR:",
+                    error
+                );
+
+
+                logoutBtn.disabled =
+                    false;
+
+                logoutBtn.textContent =
+                    "Logout";
+
+
+                alert(
+                    "Logout failed. Please try again."
+                );
+
+                return;
+            }
+
+
+            console.log(
+                "✅ USER LOGGED OUT"
+            );
+
+
+            // HOME PAGE RELOAD
+
+            window.location.href =
+                "/";
+
+        }
+    );
+
+}
+
+
+// ======================================
 // AUTH STATE LISTENER
 // ======================================
 
@@ -369,20 +472,21 @@ supabaseClient.auth.onAuthStateChange(
         );
 
 
-        // Auth change ke baad UI update
+        setTimeout(
+            () => {
 
-        setTimeout(() => {
+                updateHomeAuth();
 
-            updateHomeAuth();
-
-        }, 0);
+            },
+            0
+        );
 
     }
 );
 
 
 // ======================================
-// INITIAL LOAD
+// INITIAL RUN
 // ======================================
 
 updateHomeAuth();
