@@ -16,7 +16,22 @@ const SUPABASE_KEY =
 const supabaseClient =
     supabase.createClient(
         SUPABASE_URL,
-        SUPABASE_KEY
+        SUPABASE_KEY,
+        {
+            auth: {
+                // Keep user logged in
+                persistSession: true,
+
+                // Automatically refresh session
+                autoRefreshToken: true,
+
+                // Handle auth redirects
+                detectSessionInUrl: true,
+
+                // Store session in browser
+                storage: window.localStorage
+            }
+        }
     );
 
 
@@ -370,7 +385,7 @@ form.addEventListener("submit", async (e) => {
 
 
         // =================================
-        // USER SUCCESSFULLY LOGGED IN
+        // LOGIN SUCCESS
         // =================================
 
         console.log(
