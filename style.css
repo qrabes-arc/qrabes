@@ -1,88 +1,752 @@
-:root{ --bg:#0a0a0a; --card:#151515; --white:#fff; --text:#b8b8b8; --gold:#d4af37; --border:rgba(255,255,255,.08); } *{ margin:0; padding:0; box-sizing:border-box; } html{ scroll-behavior:smooth; } body{ background:var(--bg); color:var(--white); font-family:Inter,Arial,sans-serif; overflow-x:hidden; } img{ display:block; max-width:100%; } button{ border:0; background:none; color:white; cursor:pointer; } /* FEED */ #feed{ width:92%; max-width:1050px; margin:55px auto; } /* POST */ .post{ width:100%; background:var(--card); border:1px solid var(--border); border-radius:20px; overflow:hidden; margin-bottom:38px; box-shadow: 0 15px 45px rgba(0,0,0,.30); transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease; } .post:hover{ transform:translateY(-4px); border-color:rgba(212,175,55,.25); box-shadow: 0 22px 60px rgba(0,0,0,.40); } /* IMAGE */ .post-image{ width:100%; background:#101010; overflow:hidden; } .post-image img{ width:100%; height:auto; display:block; object-fit:contain; transition: transform .5s cubic-bezier(.2,.8,.2,1); } .post:hover .post-image img{ transform:scale(1.015); } /* CONTENT */ .post-body{ padding:22px 24px 20px; } .post h2{ margin:0; color:#fff; font-size:23px; font-weight:650; line-height:1.35; letter-spacing:-.25px; } .post p{ margin-top:9px; color:var(--text); font-size:14px; line-height:1.65; max-width:850px; } /* ACTIONS */ .actions{ display:flex; align-items:center; gap:8px; margin-top:17px; } .actions button{ width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:50%; color:#888; transition: color .2s ease, background .2s ease, transform .2s ease; } .actions button svg{ width:18px; height:18px; } .actions button:hover{ color:#fff; background:rgba(255,255,255,.07); transform:translateY(-2px); } .actions .like-btn:hover{ color:#ff5b70; } .actions .share-btn:hover{ color:var(--gold); } /* SOURCE */ .source{ margin-top:15px; padding-top:11px; border-top:1px solid rgba(255,255,255,.06); color:#707070; font-size:9px; letter-spacing:1.1px; text-transform:uppercase; } 
- /* MOBILE */
+:root{
+    --bg:#0a0a0a;
+    --card:#151515;
+    --white:#fff;
+    --text:#b8b8b8;
+    --gold:#d4af37;
+    --border:rgba(255,255,255,.08);
+}
 
-@media(max-width:700px){
+
+/* =====================================================
+   RESET
+===================================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+    background:var(--bg);
+}
+
+body{
+    width:100%;
+    min-height:100vh;
+
+    background:var(--bg);
+    color:var(--white);
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+
+    overflow-x:hidden;
+}
+
+img{
+    display:block;
+    max-width:100%;
+}
+
+button{
+    border:0;
+    background:none;
+    color:white;
+    cursor:pointer;
+    font-family:inherit;
+}
+
+
+/* =====================================================
+   FEED
+===================================================== */
+
+#feed{
+    width:100%;
+    max-width:720px;
+
+    margin:0 auto;
+
+    padding:
+        26px
+        18px
+        70px;
+}
+
+
+/* =====================================================
+   POST
+   CODE 1 CARD STYLE REMOVED
+===================================================== */
+
+.post{
+    width:100%;
+
+    margin:0;
+    padding:0;
+
+    background:transparent;
+
+    border:0;
+    border-radius:0;
+
+    box-shadow:none;
+}
+
+
+/* =====================================================
+   POST TO POST SPACE
+===================================================== */
+
+.post:not(:last-child){
+    margin-bottom:38px;
+}
+
+
+/* =====================================================
+   USER ROW
+===================================================== */
+
+.post-user{
+    width:100%;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:16px;
+
+    margin-bottom:14px;
+}
+
+
+/* =====================================================
+   USER INFO
+===================================================== */
+
+.user-info{
+    display:flex;
+    align-items:center;
+
+    gap:11px;
+
+    min-width:0;
+}
+
+
+/* =====================================================
+   AVATAR
+===================================================== */
+
+.user-avatar{
+    width:40px;
+    height:40px;
+
+    flex:0 0 40px;
+
+    display:block;
+
+    object-fit:cover;
+
+    border-radius:50%;
+
+    background:#292929;
+}
+
+
+/* =====================================================
+   USER META
+===================================================== */
+
+.user-meta{
+    min-width:0;
+}
+
+.username{
+    color:var(--white);
+
+    font-size:14px;
+    font-weight:700;
+
+    line-height:1.2;
+
+    letter-spacing:-.15px;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.post-time{
+    margin-top:4px;
+
+    color:#858585;
+
+    font-size:10.5px;
+    font-weight:400;
+
+    line-height:1.2;
+}
+
+
+/* =====================================================
+   FOLLOW BUTTON
+===================================================== */
+
+.follow-btn{
+    appearance:none;
+
+    flex-shrink:0;
+
+    min-width:76px;
+    min-height:32px;
+
+    padding:
+        6px
+        14px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.20);
+
+    background:
+        rgba(255,255,255,.035);
+
+    color:#fff;
+
+    border-radius:6px;
+
+    font-family:inherit;
+
+    font-size:11px;
+    font-weight:650;
+
+    cursor:pointer;
+
+    transition:
+        background .18s ease,
+        border-color .18s ease,
+        transform .15s ease;
+}
+
+.follow-btn:hover{
+    background:
+        rgba(255,255,255,.075);
+
+    border-color:
+        rgba(255,255,255,.30);
+}
+
+.follow-btn:active{
+    transform:scale(.95);
+}
+
+
+/* =====================================================
+   IMAGE
+===================================================== */
+
+.post-image{
+    width:100%;
+
+    position:relative;
+
+    background:#292929;
+
+    overflow:hidden;
+
+    border-radius:1px;
+}
+
+.post-image img{
+    width:100%;
+    height:auto;
+
+    max-width:100%;
+
+    display:block;
+
+    object-fit:cover;
+
+    border-radius:1px;
+
+    transition:
+        transform .35s
+        cubic-bezier(.2,.7,.2,1);
+}
+
+
+/* =====================================================
+   IMAGE TOUCH
+===================================================== */
+
+.post-image:active img{
+    transform:scale(.987);
+}
+
+
+/* =====================================================
+   CONTENT
+===================================================== */
+
+.post-content{
+    width:100%;
+
+    padding-top:14px;
+}
+
+
+/* =====================================================
+   TITLE
+===================================================== */
+
+.post-title{
+    margin:0;
+
+    color:var(--text);
+
+    font-size:20px;
+    line-height:1.28;
+
+    font-weight:720;
+
+    letter-spacing:-.45px;
+}
+
+
+/* =====================================================
+   DESCRIPTION
+===================================================== */
+
+.post-description{
+    margin-top:5px;
+
+    color:#999;
+
+    font-size:13px;
+
+    line-height:1.48;
+
+    font-weight:400;
+}
+
+
+/* =====================================================
+   BOTTOM ROW
+===================================================== */
+
+.post-bottom{
+    width:100%;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:15px;
+
+    margin-top:12px;
+
+    padding:0;
+
+    border:0;
+}
+
+
+/* =====================================================
+   LIKE BUTTON
+===================================================== */
+
+.like-btn{
+    appearance:none;
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:flex-start;
+
+    gap:6px;
+
+    min-height:30px;
+
+    padding:
+        4px
+        8px
+        4px
+        0;
+
+    margin:0;
+
+    border:0;
+
+    background:transparent;
+
+    color:#8b8b8b;
+
+    border-radius:0;
+
+    font-family:inherit;
+
+    font-size:11px;
+    font-weight:600;
+
+    line-height:1;
+
+    cursor:pointer;
+
+    transition:
+        color .18s ease,
+        transform .15s ease;
+}
+
+.like-btn:hover{
+    color:#fff;
+    background:transparent;
+}
+
+.like-btn:active{
+    transform:scale(.92);
+}
+
+
+/* =====================================================
+   HEART SVG
+===================================================== */
+
+.like-icon{
+    width:20px;
+    height:20px;
+
+    flex:0 0 20px;
+
+    display:block;
+
+    fill:none;
+
+    stroke:currentColor;
+
+    stroke-width:1.7;
+
+    stroke-linecap:round;
+    stroke-linejoin:round;
+
+    transition:
+        fill .18s ease,
+        stroke .18s ease,
+        transform .18s ease;
+}
+
+
+/* =====================================================
+   LIKED STATE
+===================================================== */
+
+.like-btn.liked{
+    color:#ff4965;
+}
+
+.like-btn.liked .like-icon{
+    fill:currentColor;
+
+    stroke:currentColor;
+
+    transform:scale(1.04);
+}
+
+
+/* =====================================================
+   SHARE AREA
+===================================================== */
+
+.post-actions{
+    display:flex;
+
+    align-items:center;
+
+    gap:3px;
+
+    margin-left:auto;
+}
+
+
+/* =====================================================
+   SHARE BUTTON
+===================================================== */
+
+.action-btn{
+    appearance:none;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:5px;
+
+    min-height:30px;
+
+    padding:
+        4px
+        0
+        4px
+        7px;
+
+    border:0;
+
+    background:transparent;
+
+    color:#888;
+
+    border-radius:0;
+
+    font-family:inherit;
+
+    font-size:11px;
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:
+        background .18s ease,
+        color .18s ease,
+        transform .15s ease;
+}
+
+.action-btn:hover{
+    background:transparent;
+    color:#fff;
+}
+
+.action-btn:active{
+    transform:scale(.93);
+}
+
+
+/* =====================================================
+   SHARE ICON
+===================================================== */
+
+.action-icon{
+    width:18px;
+    height:18px;
+
+    display:inline-flex;
+
+    align-items:center;
+    justify-content:center;
+
+    font-size:17px;
+
+    line-height:1;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:600px){
 
     #feed{
         width:100%;
-        margin:20px 0;
-        padding:0;
+        max-width:none;
+
+        padding:
+            20px
+            13px
+            60px;
     }
 
-    
-.post{
-    width:100%;
-    margin-bottom:20px;
 
-    padding:9px;
+    /* ---------------------------------------------
+       POST SEPARATION
+    --------------------------------------------- */
 
-    border-radius:0;
-box-shadow:
-        0 10px 32px rgba(0,0,0,.28);
-    
-}
-    .post:hover{
-        transform:none;
-
-        box-shadow:
-            0 10px 32px rgba(0,0,0,.28);
+    .post:not(:last-child){
+        margin-bottom:31px;
     }
+
+
+    /* ---------------------------------------------
+       USER
+    --------------------------------------------- */
+
+    .post-user{
+        margin-bottom:11px;
+
+        gap:10px;
+    }
+
+    .user-info{
+        gap:9px;
+    }
+
+    .user-avatar{
+        width:37px;
+        height:37px;
+
+        flex-basis:37px;
+    }
+
+    .username{
+        font-size:13px;
+    }
+
+    .post-time{
+        margin-top:3px;
+
+        font-size:10px;
+    }
+
+
+    /* ---------------------------------------------
+       FOLLOW
+    --------------------------------------------- */
+
+    .follow-btn{
+        min-width:70px;
+        min-height:29px;
+
+        padding:
+            5px
+            12px;
+
+        border-radius:5px;
+
+        font-size:10.5px;
+    }
+
+
+    /* ---------------------------------------------
+       IMAGE
+    --------------------------------------------- */
 
     .post-image{
-        width:100%;
-
-        border-radius:9px;
-
-        overflow:hidden;
+        border-radius:4px;
     }
 
-    .post-image img{
-        width:100%;
-        height:auto;
 
-        display:block;
+    /* ---------------------------------------------
+       CONTENT
+    --------------------------------------------- */
 
-        object-fit:contain;
+    .post-content{
+        padding-top:11px;
     }
 
-    .post-body{
-        padding:13px 3px 5px;
+    .post-title{
+        font-size:18px;
+
+        line-height:1.3;
+
+        letter-spacing:-.3px;
     }
 
-    .post h2{
-        font-size:19px;
+    .post-description{
+        margin-top:5px;
+
+        font-size:12px;
+
+        line-height:1.48;
     }
 
-    .post p{
-        margin-top:7px;
 
-        font-size:13px;
+    /* ---------------------------------------------
+       BOTTOM
+    --------------------------------------------- */
 
-        line-height:1.6;
+    .post-bottom{
+        margin-top:10px;
+
+        padding:0;
+
+        border:0;
     }
 
-    .actions{
-        margin-top:14px;
 
-        gap:6px;
+    /* ---------------------------------------------
+       LIKE
+    --------------------------------------------- */
+
+    .like-btn{
+        min-height:28px;
+
+        padding:
+            4px
+            7px
+            4px
+            0;
+
+        gap:5px;
+
+        font-size:10.5px;
     }
 
-    .actions button{
-        width:32px;
-        height:32px;
+    .like-icon{
+        width:19px;
+        height:19px;
+
+        flex-basis:19px;
     }
 
-    .actions button svg{
+
+    /* ---------------------------------------------
+       SHARE
+    --------------------------------------------- */
+
+    .action-btn{
+        min-height:28px;
+
+        padding:
+            4px
+            0
+            4px
+            7px;
+
+        font-size:10.5px;
+    }
+
+    .action-icon{
         width:17px;
         height:17px;
+
+        font-size:16px;
+    }
+}
+
+
+/* =====================================================
+   SMALL PHONES
+===================================================== */
+
+@media(max-width:380px){
+
+    #feed{
+        padding-left:10px;
+        padding-right:10px;
     }
 
-    .source{
-        margin-top:12px;
-
-        padding-top:9px;
-
-        font-size:8px;
+    .post:not(:last-child){
+        margin-bottom:28px;
     }
 
+    .post-title{
+        font-size:17px;
+    }
+
+    .post-description{
+        font-size:11.5px;
+    }
+
+    .follow-btn{
+        min-width:66px;
+
+        padding-left:10px;
+        padding-right:10px;
+    }
+
+    .like-btn{
+        padding-right:5px;
+    }
 }
